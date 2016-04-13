@@ -57,25 +57,3 @@ makeGlobals g p =
     -- split _playerDeck, insert epidemics according to config, and restack
   in
     initial -- TODO
-
-data OutbreakCounter
-  = OutbreakZero
-  | OutbreakOne
-  | OutbreakTwo
-  | OutbreakThree
-  | OutbreakFour
-  | OutbreakFive
-  | OutbreakSix
-  | OutbreakSeven
-  | OutbreakEight
-  deriving (Show, Read, Eq, Ord, Enum, Bounded)
-
-data PlayerTurn
-  = Action1
-  | Action2
-  | Action3
-  | Action4
-  | Draw1
-  | Draw2
-  | Infect
-  deriving (Show, Read, Eq, Ord, Enum, Bounded)
