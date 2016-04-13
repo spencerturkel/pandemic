@@ -1,0 +1,60 @@
+
+./deck.hs,238
+fisherYates fisherYates5,6
+fisherYates fisherYates6,7
+newtype Deck Deck19,20
+  = Deck Deck20,21
+  = Deck { getDeck getDeck20,21
+shuffle shuffle24,25
+shuffle shuffle25,26
+splitInto splitInto27,28
+splitInto splitInto28,29
+
+./pandemic.hs,1267
+main main4,5
+main main5,6
+data CityCity7,8
+  = CityCity8,9
+data InfectionCardInfectionCard11,12
+  = InfectionCard InfectionCard12,13
+data PlayerCardPlayerCard15,16
+  = PlayerCard PlayerCard16,17
+  | EventEvent17,18
+data CureStatusCureStatus20,21
+  = UncuredUncured21,22
+  | CuredCured22,23
+  | EradicatedEradicated23,24
+data DiseaseDisease26,27
+  = RedRed27,28
+  | YellowYellow28,29
+  | BlueBlue29,30
+  | BlackBlack30,31
+data CuresCures33,34
+  = Cures Cures34,35
+  = Cures { _redCure _redCure34,35
+          , _yellowCure _yellowCure35,36
+          , _blueCure _blueCure36,37
+          , _blackCure _blackCure37,38
+data OutbreakMarkOutbreakMark42,43
+  = OutbreakOneOutbreakOne43,44
+  | OutbreakTwoOutbreakTwo44,45
+  | OutbreakThreeOutbreakThree45,46
+  | OutbreakFourOutbreakFour46,47
+  | OutbreakFiveOutbreakFive47,48
+  | OutbreakSixOutbreakSix48,49
+  | OutbreakSevenOutbreakSeven49,50
+  | OutbreakEightOutbreakEight50,51
+data InfectionRateInfectionRate53,54
+  = RateTwoOneRateTwoOne54,55
+  | RateTwoTwoRateTwoTwo55,56
+  | RateTwoThreeRateTwoThree56,57
+  | RateThreeOneRateThreeOne57,58
+  | RateThreeTwoRateThreeTwo58,59
+  | RateFourOneRateFourOne59,60
+  | RateFourTwoRateFourTwo60,61
+
+./commands.hs,103
+module Commands Commands0,1
+data CommandF CommandF4,5
+  = ActionF ActionF5,6
+  | EventEvent6,7
