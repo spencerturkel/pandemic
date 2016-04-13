@@ -1,5 +1,8 @@
 module City where
 
+citiesConnected :: City -> City -> Bool
+citiesConnected x y = x `elem` connectionsFromCity y
+
 -- Manually enumerated.
 data City
   = SanFrancisco
