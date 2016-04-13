@@ -2,7 +2,10 @@ module Globals where
 
 import           Cures
 import           Diseases
+import           Deck
 import           InfectionRate
+import           InfectionCard
+import           PlayerCard
 
 data Globals
   = Globals { _infectionRateCounter :: InfectionRateCounter
@@ -10,6 +13,10 @@ data Globals
             , _cures                :: Cures
             , _diseases             :: Diseases
             , _researchStations     :: Int
+            , _infectionDeck :: Deck InfectionCard
+            , _infectionDiscard :: Deck InfectionCard
+            , _playerDeck :: Deck PlayerCard
+            , _playerDiscard :: Deck PlayerCard
             }
     deriving (Show, Read)
 
