@@ -1,10 +1,12 @@
 module Globals where
 
+import           System.Random
+
 import           Cures
-import           Diseases
 import           Deck
-import           InfectionRate
+import           Diseases
 import           InfectionCard
+import           InfectionRate
 import           PlayerCard
 
 data Globals
@@ -13,10 +15,11 @@ data Globals
             , _cures                :: Cures
             , _diseases             :: Diseases
             , _researchStations     :: Int
-            , _infectionDeck :: Deck InfectionCard
-            , _infectionDiscard :: Deck InfectionCard
-            , _playerDeck :: Deck PlayerCard
-            , _playerDiscard :: Deck PlayerCard
+            , _infectionDeck        :: Deck InfectionCard
+            , _infectionDiscard     :: Deck InfectionCard
+            , _playerDeck           :: Deck PlayerCard
+            , _playerDiscard        :: Deck PlayerCard
+            , _generator            :: StdGen
             }
     deriving (Show, Read)
 
