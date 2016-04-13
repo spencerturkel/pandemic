@@ -1,5 +1,8 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Deck where
 
+import Control.Lens
 import Control.Monad.State
 import Data.Function
 import Data.List
@@ -11,6 +14,7 @@ newtype Deck a
   = Deck { _getDeck :: [a]
          }
   deriving (Show, Read)
+makeLenses ''Deck
 
 addToDeck :: a -> Deck a -> Deck a
 addToDeck a (Deck as) = Deck $ a:as

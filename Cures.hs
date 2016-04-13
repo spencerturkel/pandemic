@@ -1,4 +1,8 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Cures where
+
+import           Control.Lens
 
 data CureStatus
   = Uncured
@@ -13,3 +17,4 @@ data Cures
           , _blackCure :: CureStatus
           }
   deriving (Show, Read)
+makeLenses ''Cures

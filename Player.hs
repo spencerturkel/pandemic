@@ -1,4 +1,8 @@
+{-# LANGUAGE TemplateHaskell #-}
+
 module Player where
+
+import Control.Lens
 
 import           PlayerCard
 import           Role
@@ -9,3 +13,4 @@ data Player
            , _role         :: Role
            }
     deriving (Show, Read, Eq, Ord)
+makeLenses ''Player

@@ -1,5 +1,7 @@
 module Globals where
 
+import Control.Monad.State
+import Control.Lens
 import           Data.Map.Lazy   (Map)
 import qualified Data.Map.Lazy   as Map
 import           System.Random
@@ -9,6 +11,7 @@ import           Cures
 import           Deck
 import           Diseases
 import           EventEffect
+import Lenses
 import           InfectionCard
 import           InfectionRate
 import           OutbreakCounter
@@ -32,6 +35,7 @@ data Globals
             , _eventEffects          :: [EventEffect]
             }
     deriving (Show, Read)
+makeLenses ''Globals
 
 makeGlobals :: StdGen -> [Player] -> Globals
 makeGlobals g p =
@@ -58,3 +62,7 @@ makeGlobals g p =
     -- split _playerDeck, insert epidemics according to config, and restack
   in
     initial -- TODO
+
+shuffleInfectionDeck :: (MonadState g m, RandomGen g) => m Globals
+shuffleInfectionDeck = do
+  undefined
