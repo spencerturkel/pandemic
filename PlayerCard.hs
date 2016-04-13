@@ -5,4 +5,4 @@ import City
 data PlayerCard
   = PlayerCard City
   | Event
-  deriving (Show, Read)
+  deriving (Show, Read, Eq, Ord)

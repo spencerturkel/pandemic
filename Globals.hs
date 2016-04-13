@@ -16,6 +16,7 @@ import           PlayerCard
 
 data Globals
   = Globals { _spaces                :: Map City Diseases
+            , _players               :: [Player]
             , _playerLocations       :: Map Player City
             , _infectionRateCounter  :: InfectionRateCounter
             , _outbreakCounter       :: OutbreakCounter
@@ -31,10 +32,11 @@ data Globals
             }
     deriving (Show, Read)
 
-makeGlobals :: StdGen -> Globals
-makeGlobals g =
+makeGlobals :: StdGen -> [Player] -> Globals
+makeGlobals g p =
   let
     initial = Globals { _spaces = Map.empty -- TODO
+                      , _players = p
                       , _playerLocations = Map.empty -- TODO All in Atlanta
                       , _infectionRateCounter = minBound
                       , _outbreakCounter = minBound

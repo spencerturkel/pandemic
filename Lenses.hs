@@ -7,8 +7,10 @@ import           Cures
 import           Deck
 import           Diseases
 import           Globals
+import           Player
 
 makeLenses ''Cures
 makeLenses ''Deck
-makeLenses ''Globals
 makeLenses ''Diseases
+makeLenses ''Globals
+makeLenses ''Player
