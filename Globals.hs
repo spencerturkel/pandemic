@@ -1,7 +1,7 @@
 module Globals where
 
-import           Data.Map.Lazy (Map)
-import qualified Data.Map.Lazy as Map
+import           Data.Map.Lazy   (Map)
+import qualified Data.Map.Lazy   as Map
 import           System.Random
 
 import           City
@@ -11,6 +11,7 @@ import           Diseases
 import           EventEffect
 import           InfectionCard
 import           InfectionRate
+import           OutbreakCounter
 import           Player
 import           PlayerCard
 
