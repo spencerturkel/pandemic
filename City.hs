@@ -53,7 +53,7 @@ data City
   | Taipei
   | Manila
   | Sydney
-  deriving (Show, Read, Eq)
+  deriving (Show, Read, Eq, Ord, Enum, Bounded)
 
 -- Manually enumerated, using a clockwise scanning pattern from 12 o'clock.
 connectionsFromCity :: City -> [City]

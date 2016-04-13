@@ -1,16 +1,23 @@
 module Globals where
 
+import           Data.Map.Lazy (Map)
+import qualified Data.Map.Lazy as Map
 import           System.Random
 
+import           City
 import           Cures
 import           Deck
 import           Diseases
+import           EventEffect
 import           InfectionCard
 import           InfectionRate
+import           Player
 import           PlayerCard
 
 data Globals
-  = Globals { _infectionRateCounter  :: InfectionRateCounter
+  = Globals { _spaces                :: Map City Diseases
+            , _playerLocations       :: Map Player City
+            , _infectionRateCounter  :: InfectionRateCounter
             , _outbreakCounter       :: OutbreakCounter
             , _cures                 :: Cures
             , _diseaseSupply         :: Diseases
@@ -20,13 +27,16 @@ data Globals
             , _playerDeck            :: Deck PlayerCard
             , _playerDiscard         :: Deck PlayerCard
             , _generator             :: StdGen
+            , _eventEffects          :: [EventEffect]
             }
     deriving (Show, Read)
 
 makeGlobals :: StdGen -> Globals
 makeGlobals g =
   let
-    initial = Globals { _infectionRateCounter = minBound
+    initial = Globals { _spaces = Map.empty -- TODO
+                      , _playerLocations = Map.empty -- TODO All in Atlanta
+                      , _infectionRateCounter = minBound
                       , _outbreakCounter = minBound
                       , _cures = Cures Uncured Uncured Uncured Uncured
                       , _diseaseSupply = Diseases 24 24 24 24
@@ -36,6 +46,7 @@ makeGlobals g =
                       , _playerDeck = undefined -- TODO
                       , _playerDiscard = undefined -- TODO
                       , _generator = g
+                      , _eventEffects = []
                       }
     -- shuffle _infectionDeck
     -- do initial infections, draw 3 and put 3 on each, draw 3 and put 2 on each, draw 3 and put 1 on each
@@ -55,7 +66,7 @@ data OutbreakCounter
   | OutbreakSix
   | OutbreakSeven
   | OutbreakEight
-  deriving (Show, Read, Enum, Bounded)
+  deriving (Show, Read, Eq, Ord, Enum, Bounded)
 
 data PlayerTurn
   = Action1
@@ -65,3 +76,4 @@ data PlayerTurn
   | Draw1
   | Draw2
   | Infect
+  deriving (Show, Read, Eq, Ord, Enum, Bounded)
