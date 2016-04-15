@@ -1,12 +1,14 @@
+{-# LANGUAGE FlexibleContexts      #-}
+{-# LANGUAGE Rank2Types      #-}
 {-# LANGUAGE TemplateHaskell #-}
-{-# LANGUAGE Rank2Types #-}
 
 module Globals where
 
-import Control.Monad.State
-import Control.Lens
-import           Data.Map.Lazy   (Map)
-import qualified Data.Map.Lazy   as Map
+import           Control.Lens
+import           Control.Monad.State
+import           Control.Monad.Except
+import           Data.Map.Lazy       (Map)
+import qualified Data.Map.Lazy       as Map
 import           System.Random
 
 import           City
@@ -21,6 +23,7 @@ import           PlayerCard
 
 data Globals
   = Globals { _spaces                :: Map City Diseases
+            , _researchLocations     :: Map City Bool
             , _players               :: [Player]
             , _playerLocations       :: Map Player City
             , _infectionRateCounter  :: InfectionRateCounter
@@ -43,6 +46,9 @@ makeGlobals g p =
   let
     initial = Globals { _spaces = Map.fromList $
                         map (flip (,) (Diseases 0 0 0 0)) [minBound..maxBound]
+                      , _researchLocations = Map.fromList $
+                        map ((\(c,b) -> if c == Atlanta then (c, True) else (c,b))
+                        . flip (,) False) [minBound..maxBound]
                       , _players = p
                       , _playerLocations = Map.fromList $
                         map (flip (,) Atlanta) p
@@ -58,15 +64,26 @@ makeGlobals g p =
                       , _generator = g
                       , _eventEffects = []
                       }
-  in flip execState initial $ do
+  in initial &~ do
     modify $ shuffleDeck infectionDeck
-    -- do initial infections, draw 3 and put 3 on each, draw 3 and put 2 on each, draw 3 and put 1 on each
-    -- shuffle _playerDeck without epidemics
     modify $ shuffleDeck playerDeck
     -- deal according to number of players, 2 -> 4, 3 -> 3, 4 -> 2
-    -- set playerLocations to Atlanta
-    -- put research in Atlanta
+    Right hands <-
+      runExceptT . flip replicateM (drawFrom playerDeck)
+      $ case compare (length p) 3 of LT -> 4
+                                     EQ -> 3
+                                     GT -> 2
+    undefined
     -- split _playerDeck, insert epidemics according to config, and restack
+
+drawFrom ::
+  (MonadError DeckException m, MonadState Globals m) =>
+  Lens' Globals (Deck a) -> m a
+drawFrom target = do
+    deck <- use target
+    (card, deck') <- runStateT drawFromDeck deck
+    target .= deck'
+    return card
 
 shuffleDeck :: Lens' Globals (Deck a) -> Globals -> Globals
 shuffleDeck deck global =
@@ -75,4 +92,5 @@ shuffleDeck deck global =
   in
     global & deck .~ d & generator .~ g
 
---doInitialInfections :: 
+    -- do initial infections, draw 3 and put 3 on each, draw 3 and put 2 on each, draw 3 and put 1 on each
+doInitialInfections = undefined
