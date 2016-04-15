@@ -1,60 +1,181 @@
 
-./deck.hs,238
-fisherYates fisherYates5,6
-fisherYates fisherYates6,7
-newtype Deck Deck19,20
-  = Deck Deck20,21
-  = Deck { getDeck getDeck20,21
-shuffle shuffle24,25
-shuffle shuffle25,26
-splitInto splitInto27,28
-splitInto splitInto28,29
+./City.hs,1448
+citiesConnected citiesConnected2,3
+citiesConnected citiesConnected3,4
+data CityCity6,7
+  = SanFranciscoSanFrancisco7,8
+  | ChicagoChicago8,9
+  | TorontoToronto9,10
+  | AtlantaAtlanta10,11
+  | WashingtonWashington11,12
+  | NewYorkNewYork12,13
+  | LondonLondon13,14
+  | MadridMadrid14,15
+  | ParisParis15,16
+  | EssenEssen16,17
+  | MilanMilan17,18
+  | StPetersburgStPetersburg18,19
+  | LosAngelesLosAngeles19,20
+  | MexicoCityMexicoCity20,21
+  | MiamiMiami21,22
+  | BogotaBogota22,23
+  | LimaLima23,24
+  | SantiagoSantiago24,25
+  | SaoPauloSaoPaulo25,26
+  | BuenosAiresBuenosAires26,27
+  | LagosLagos27,28
+  | KinshashaKinshasha28,29
+  | JohannesburgJohannesburg29,30
+  | KhartoumKhartoum30,31
+  | AlgiersAlgiers31,32
+  | CairoCairo32,33
+  | IstanbulIstanbul33,34
+  | BaghdadBaghdad34,35
+  | RiyadhRiyadh35,36
+  | MoscowMoscow36,37
+  | TehranTehran37,38
+  | KarachiKarachi38,39
+  | MumbaiMumbai39,40
+  | DelhiDelhi40,41
+  | KolkataKolkata41,42
+  | ChennaiChennai42,43
+  | BangkokBangkok43,44
+  | JakartaJakarta44,45
+  | HoChiMinhCityHoChiMinhCity45,46
+  | HongKongHongKong46,47
+  | ShanghaiShanghai47,48
+  | BeijingBeijing48,49
+  | SeoulSeoul49,50
+  | TokyoTokyo50,51
+  | OsakaOsaka51,52
+  | TaipeiTaipei52,53
+  | ManilaManila53,54
+  | SydneySydney54,55
+connectionsFromCity connectionsFromCity58,59
+connectionsFromCity connectionsFromCity59,60
 
-./pandemic.hs,1267
-main main4,5
-main main5,6
-data CityCity7,8
-  = CityCity8,9
-data InfectionCardInfectionCard11,12
-  = InfectionCard InfectionCard12,13
-data PlayerCardPlayerCard15,16
-  = PlayerCard PlayerCard16,17
-  | EventEvent17,18
-data CureStatusCureStatus20,21
-  = UncuredUncured21,22
-  | CuredCured22,23
-  | EradicatedEradicated23,24
-data DiseaseDisease26,27
-  = RedRed27,28
-  | YellowYellow28,29
-  | BlueBlue29,30
-  | BlackBlack30,31
-data CuresCures33,34
-  = Cures Cures34,35
-  = Cures { _redCure _redCure34,35
-          , _yellowCure _yellowCure35,36
-          , _blueCure _blueCure36,37
-          , _blackCure _blackCure37,38
-data OutbreakMarkOutbreakMark42,43
-  = OutbreakOneOutbreakOne43,44
-  | OutbreakTwoOutbreakTwo44,45
-  | OutbreakThreeOutbreakThree45,46
-  | OutbreakFourOutbreakFour46,47
-  | OutbreakFiveOutbreakFive47,48
-  | OutbreakSixOutbreakSix48,49
-  | OutbreakSevenOutbreakSeven49,50
-  | OutbreakEightOutbreakEight50,51
-data InfectionRateInfectionRate53,54
-  = RateTwoOneRateTwoOne54,55
-  | RateTwoTwoRateTwoTwo55,56
-  | RateTwoThreeRateTwoThree56,57
-  | RateThreeOneRateThreeOne57,58
-  | RateThreeTwoRateThreeTwo58,59
-  | RateFourOneRateFourOne59,60
-  | RateFourTwoRateFourTwo60,61
+./PlayerCard.hs,109
+data PlayerCardPlayerCard5,6
+  = PlayerCard PlayerCard6,7
+  | Event Event7,8
+  | EpidemicEpidemic8,9
 
-./commands.hs,103
+./Cures.hs,312
+data CureStatusCureStatus6,7
+  = UncuredUncured7,8
+  | CuredCured8,9
+  | EradicatedEradicated9,10
+data CuresCures12,13
+  = Cures Cures13,14
+  = Cures { _redCure _redCure13,14
+          , _yellowCure _yellowCure14,15
+          , _blueCure _blueCure15,16
+          , _blackCure _blackCure16,17
+
+./InfectionRate.hs,447
+data InfectionRateCounterInfectionRateCounter2,3
+  = RateTwoOneRateTwoOne3,4
+  | RateTwoTwoRateTwoTwo4,5
+  | RateTwoThreeRateTwoThree5,6
+  | RateThreeOneRateThreeOne6,7
+  | RateThreeTwoRateThreeTwo7,8
+  | RateFourOneRateFourOne8,9
+  | RateFourTwoRateFourTwo9,10
+data InfectionRateInfectionRate12,13
+  = RateTwoRateTwo13,14
+  | RateThreeRateThree14,15
+  | RateFourRateFour15,16
+getRate getRate18,19
+getRate getRate19,20
+
+./Diseases.hs,229
+data DiseasesDiseases6,7
+  = Diseases Diseases7,8
+  = Diseases { _blackCubes _blackCubes7,8
+             , _blueCubes _blueCubes8,9
+             , _redCubes _redCubes9,10
+             , _yellowCubes _yellowCubes10,11
+
+./commands.hs,83
 module Commands Commands0,1
 data CommandF CommandF4,5
   = ActionF ActionF5,6
-  | EventEvent6,7
+
+./Deck.hs,464
+newtype Deck Deck14,15
+  = Deck Deck15,16
+  = Deck { _getDeck _getDeck15,16
+data DeckExceptionDeckException20,21
+  = DrawFromEmptyDeckDrawFromEmptyDeck21,22
+addToDeck addToDeck24,25
+addToDeck addToDeck25,26
+drawFromDeck drawFromDeck27,28
+drawFromDeck drawFromDeck28,29
+stackSmallToBig stackSmallToBig36,37
+stackSmallToBigstackSmallToBig37,38
+splitInto splitInto43,44
+splitInto splitInto44,45
+shuffle shuffle56,57
+shuffle shuffle57,58
+
+./Role.hs,37
+data RoleRole2,3
+  = RoleRole3,4
+
+./Globals.hs,929
+data GlobalsGlobals21,22
+  = Globals Globals22,23
+  = Globals { _spaces _spaces22,23
+            , _players _players23,24
+            , _playerLocations _playerLocations24,25
+            , _infectionRateCounter _infectionRateCounter25,26
+            , _outbreakCounter _outbreakCounter26,27
+            , _cures _cures27,28
+            , _diseaseSupply _diseaseSupply28,29
+            , _researchStationSupply _researchStationSupply29,30
+            , _infectionDeck _infectionDeck30,31
+            , _infectionDiscard _infectionDiscard31,32
+            , _playerDeck _playerDeck32,33
+            , _playerDiscard _playerDiscard33,34
+            , _generator _generator34,35
+            , _eventEffects _eventEffects35,36
+makeGlobals makeGlobals40,41
+makeGlobals makeGlobals41,42
+shuffleDeck shuffleDeck70,71
+shuffleDeck shuffleDeck71,72
+--doInitialInfections --doInitialInfections77,78
+
+./EventEffect.hs,66
+data EventEffectEventEffect2,3
+  = EventEffect EventEffect3,4
+
+./Action.hs,293
+data ActionAction5,6
+  = Drive Drive6,7
+  | DirectFlight DirectFlight7,8
+  | CharterFlight CharterFlight8,9
+  | ShuttleFlight ShuttleFlight9,10
+  | BuildBuild10,11
+  | TreatTreat11,12
+  | GiveCard GiveCard12,13
+  | TakeCard TakeCard13,14
+  | DiscoverCure DiscoverCure14,15
+
+./Player.hs,173
+data PlayerPlayer9,10
+  = Player Player10,11
+  = Player { _playerNumber _playerNumber10,11
+           , _playerHand _playerHand11,12
+           , _role _role12,13
+
+./OutbreakCounter.hs,352
+data OutbreakCounterOutbreakCounter2,3
+  = OutbreakZeroOutbreakZero3,4
+  | OutbreakOneOutbreakOne4,5
+  | OutbreakTwoOutbreakTwo5,6
+  | OutbreakThreeOutbreakThree6,7
+  | OutbreakFourOutbreakFour7,8
+  | OutbreakFiveOutbreakFive8,9
+  | OutbreakSixOutbreakSix9,10
+  | OutbreakSevenOutbreakSeven10,11
+  | OutbreakEightOutbreakEight11,12

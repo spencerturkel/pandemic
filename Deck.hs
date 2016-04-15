@@ -1,8 +1,10 @@
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE FlexibleContexts #-}
 
 module Deck where
 
 import Control.Lens
+import Control.Monad.Except
 import Control.Monad.State
 import Data.Function
 import Data.List
@@ -16,12 +18,21 @@ newtype Deck a
   deriving (Show, Read)
 makeLenses ''Deck
 
+data DeckException
+  = DrawFromEmptyDeck
+  deriving (Show, Read)
+
 addToDeck :: a -> Deck a -> Deck a
 addToDeck a (Deck as) = Deck $ a:as
 
-drawFromDeck :: Deck a -> (Maybe a, Deck a)
-drawFromDeck (Deck []) = (Nothing, Deck [])
-drawFromDeck (Deck (a:as)) = (Just a, Deck as)
+drawFromDeck :: (MonadError DeckException m, MonadState (Deck a) m) => m a
+drawFromDeck = do
+  (Deck d) <- get
+  case d of
+    [] -> throwError DrawFromEmptyDeck
+    (a:as) -> do
+      put (Deck as)
+      return a
 
 stackSmallToBig :: [Deck a] -> Deck a
 stackSmallToBig
