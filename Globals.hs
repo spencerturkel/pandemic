@@ -67,12 +67,14 @@ makeGlobals g p =
   in initial &~ do
     modify $ shuffleDeck infectionDeck
     modify $ shuffleDeck playerDeck
-    -- deal according to number of players, 2 -> 4, 3 -> 3, 4 -> 2
-    Right hands <-
-      runExceptT . flip replicateM (drawFrom playerDeck)
+    -- do initial infections
+    Right hands <- -- TODO get multiple hands!!! BUG
+      runExceptT . replicateM (length p) . flip replicateM (drawFrom playerDeck)
       $ case compare (length p) 3 of LT -> 4
                                      EQ -> 3
                                      GT -> 2
+    players %= zipWith (_) hands
+    -- give hands to players
     undefined
     -- split _playerDeck, insert epidemics according to config, and restack
 
