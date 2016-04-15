@@ -15,6 +15,7 @@ import           City
 import           Cures
 import           Deck
 import           Diseases
+import Exception
 import           EventEffect
 import           InfectionRate
 import           OutbreakCounter
@@ -67,15 +68,14 @@ makeGlobals g p =
   in initial &~ do
     modify $ shuffleDeck infectionDeck
     modify $ shuffleDeck playerDeck
-    -- do initial infections
+    undefined -- TODO do initial infections
     Right hands <-
       runExceptT . replicateM (length p) . flip replicateM (drawFrom playerDeck)
       $ case compare (length p) 3 of LT -> 4
                                      EQ -> 3
                                      GT -> 2
     players %= zipWith (set playerHand) hands
-    undefined
-    -- split _playerDeck, insert epidemics according to config, and restack
+    undefined -- TODO split _playerDeck, insert epidemics according to config, and restack
 
 drawFrom ::
   (MonadError DeckException m, MonadState Globals m) =>
@@ -95,3 +95,13 @@ shuffleDeck deck global =
 
     -- do initial infections, draw 3 and put 3 on each, draw 3 and put 2 on each, draw 3 and put 1 on each
 doInitialInfections = undefined
+
+infect ::
+  (MonadError Exception m, MonadState Globals m) =>
+  City -> DiseaseColor -> m ()
+infect city color = do
+      spaces %= Map.adjust (addDisease color) city
+      diseaseSupply %= removeDisease color
+      supply <- use diseaseSupply
+      unless (availableDiseases supply) $
+        throwError DrawFromEmptyDiseasePile
