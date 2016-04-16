@@ -11,6 +11,7 @@ import Data.List
 import qualified Data.Map as Map
 import System.Random
 
+import Exception
 
 newtype Deck a
   = Deck { _getDeck :: [a]
@@ -18,14 +19,10 @@ newtype Deck a
   deriving (Show, Read)
 makeLenses ''Deck
 
-data DeckException
-  = DrawFromEmptyDeck
-  deriving (Show, Read)
-
 addToDeck :: a -> Deck a -> Deck a
 addToDeck a (Deck as) = Deck $ a:as
 
-drawFromDeck :: (MonadError DeckException m, MonadState (Deck a) m) => m a
+drawFromDeck :: (MonadError Exception m, MonadState (Deck a) m) => m a
 drawFromDeck = do
   (Deck d) <- get
   case d of

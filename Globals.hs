@@ -78,7 +78,7 @@ makeGlobals g p =
     undefined -- TODO split _playerDeck, insert epidemics according to config, and restack
 
 drawFrom ::
-  (MonadError DeckException m, MonadState Globals m) =>
+  (MonadError Exception m, MonadState Globals m) =>
   Lens' Globals (Deck a) -> m a
 drawFrom target = do
     deck <- use target
@@ -96,12 +96,18 @@ shuffleDeck deck global =
     -- do initial infections, draw 3 and put 3 on each, draw 3 and put 2 on each, draw 3 and put 1 on each
 doInitialInfections = undefined
 
-infect ::
-  (MonadError Exception m, MonadState Globals m) =>
-  City -> DiseaseColor -> m ()
+
+infectFromDeck :: (MonadError Exception m, MonadState Globals m) => m ()
+infectFromDeck = do
+  city <- drawFrom infectionDeck
+    `catchError` const (throwError DrawFromEmptyInfectionDeck)
+  infect city (colorOfCity city)
+
+infect :: (MonadError Exception m, MonadState Globals m)
+          => City -> DiseaseColor -> m ()
 infect city color = do
-      spaces %= Map.adjust (addDisease color) city
-      diseaseSupply %= removeDisease color
-      supply <- use diseaseSupply
-      unless (availableDiseases supply) $
-        throwError DrawFromEmptyDiseasePile
+  spaces %= Map.adjust (addDisease color) city
+  diseaseSupply %= removeDisease color
+  supply <- use diseaseSupply
+  unless (availableDiseases supply) $
+    throwError DrawFromEmptyDiseasePile
