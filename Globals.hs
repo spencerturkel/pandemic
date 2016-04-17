@@ -43,8 +43,33 @@ data Globals
     deriving (Show, Read)
 makeLenses ''Globals
 
-makeGlobals :: StdGen -> [Player] -> Globals
-makeGlobals g p =
+data EpidemicNumber
+  = Four
+  | Five
+  | Six
+  deriving (Show, Read)
+
+fromEpidemicNumber :: (MonadReader EpidemicNumber m) => m Int
+fromEpidemicNumber = do
+  n <- ask
+  return $ case n of
+    Four -> 4
+    Five -> 5
+    Six -> 5
+
+data GlobalsConfig
+  = GlobalsConfig { _initGen :: StdGen
+                  , _initPlayers :: [Player]
+                  , _numEpidemics :: EpidemicNumber
+                  }
+    deriving (Show, Read)
+makeLenses ''GlobalsConfig
+
+makeGlobals :: (MonadReader GlobalsConfig m) => m Globals
+makeGlobals = do
+  gen <- asks $ view initGen
+  p <- asks $ view initPlayers
+  epiNum <- asks $ view numEpidemics
   let
     initial = Globals { _spaces = Map.fromList $
                         map (flip (,) (Diseases 0 0 0 0)) [minBound..maxBound]
@@ -63,10 +88,10 @@ makeGlobals g p =
                       , _infectionDiscard = Deck []
                       , _playerDeck = Deck $ map PlayerCard [minBound..maxBound]
                       , _playerDiscard = Deck []
-                      , _generator = g
+                      , _generator = gen
                       , _eventEffects = []
                       }
-  in initial &~ do
+  return $ initial &~ do
     modify $ shuffleDeck infectionDeck
     modify $ shuffleDeck playerDeck
     doInitialInfections
@@ -76,7 +101,7 @@ makeGlobals g p =
                                      EQ -> 3
                                      GT -> 2
     players %= zipWith (set playerHand) hands
-    insertEpidemics -- TODO split _playerDeck, insert epidemics according to config, and restack
+    runReaderT insertEpidemics epiNum
 
 drawFrom ::
   (MonadError DeckException m, MonadState Globals m) =>
@@ -127,4 +152,12 @@ infect city color = do
   unless (availableDiseases supply) $
     throwError DrawFromEmptyDiseasePile
 
-insertEpidemics = undefined -- TODO
+insertEpidemics :: (MonadReader EpidemicNumber m, MonadState Globals m) => m ()
+insertEpidemics = do
+  n <- fromEpidemicNumber <$> ask
+  deck <- use playerDeck
+  gen <- use generator
+  let stacks = splitInto n deck & map (shuffle . addToDeck Epidemic)
+      (shuffledStacks, gen') = runState (sequence stacks) gen
+  generator .= gen'
+  playerDeck .= stackSmallToBig shuffledStacks
