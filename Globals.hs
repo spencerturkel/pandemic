@@ -98,8 +98,10 @@ doInitialInfections = undefined
 
 doNextInfection :: (MonadError Exception m, MonadState Globals m) => m ()
 doNextInfection = do
-  city <- drawFrom infectionDeck
-  infect city $ colorOfCity city
+  c <- runExceptT (drawFrom infectionDeck :: MonadState Globals m => ExceptT DeckException m City)
+  case c of
+    Left _ -> throwError DrawFromEmptyInfectionDeck
+    Right city -> infect city $ colorOfCity city
 
 infect ::
   (MonadError Exception m, MonadState Globals m) =>
