@@ -5,8 +5,9 @@
 module Globals where
 
 import           Control.Lens
-import           Control.Monad.State
 import           Control.Monad.Except
+import           Control.Monad.Reader
+import           Control.Monad.State
 import           Data.Map.Lazy       (Map)
 import qualified Data.Map.Lazy       as Map
 import           System.Random
@@ -68,17 +69,17 @@ makeGlobals g p =
   in initial &~ do
     modify $ shuffleDeck infectionDeck
     modify $ shuffleDeck playerDeck
-    undefined -- TODO do initial infections
+    doInitialInfections
     Right hands <-
       runExceptT . replicateM (length p) . flip replicateM (drawFrom playerDeck)
       $ case compare (length p) 3 of LT -> 4
                                      EQ -> 3
                                      GT -> 2
     players %= zipWith (set playerHand) hands
-    undefined -- TODO split _playerDeck, insert epidemics according to config, and restack
+    insertEpidemics -- TODO split _playerDeck, insert epidemics according to config, and restack
 
 drawFrom ::
-  (MonadError Exception m, MonadState Globals m) =>
+  (MonadError DeckException m, MonadState Globals m) =>
   Lens' Globals (Deck a) -> m a
 drawFrom target = do
     deck <- use target
@@ -94,7 +95,20 @@ shuffleDeck deck global =
     global & deck .~ d & generator .~ g
 
     -- do initial infections, draw 3 and put 3 on each, draw 3 and put 2 on each, draw 3 and put 1 on each
-doInitialInfections = undefined
+doInitialInfections :: (MonadState Globals m) => m ()
+doInitialInfections = runReaderT go 3
+  where
+    go :: (MonadReader Int m, MonadState Globals m) => m ()
+    go = do
+      n <- ask
+      unless (n < 1) $ do
+        Right city <- runExceptT (drawFrom infectionDeck)
+        replicateM_ n
+          . fmap (either undefined id)
+          . runExceptT
+          . infect city
+          $ colorOfCity city
+        local (\x -> x - 1) go
 
 doNextInfection :: (MonadError Exception m, MonadState Globals m) => m ()
 doNextInfection = do
@@ -112,3 +126,5 @@ infect city color = do
   supply <- use diseaseSupply
   unless (availableDiseases supply) $
     throwError DrawFromEmptyDiseasePile
+
+insertEpidemics = undefined -- TODO

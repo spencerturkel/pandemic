@@ -11,7 +11,9 @@ import Data.List
 import qualified Data.Map as Map
 import System.Random
 
-import Exception
+data DeckException
+  = DrawFromEmptyDeck
+  deriving (Show, Read)
 
 newtype Deck a
   = Deck { _getDeck :: [a]
@@ -22,7 +24,7 @@ makeLenses ''Deck
 addToDeck :: a -> Deck a -> Deck a
 addToDeck a (Deck as) = Deck $ a:as
 
-drawFromDeck :: (MonadError Exception m, MonadState (Deck a) m) => m a
+drawFromDeck :: (MonadError DeckException m, MonadState (Deck a) m) => m a
 drawFromDeck = do
   (Deck d) <- get
   case d of
@@ -36,7 +38,7 @@ stackSmallToBig
   = Deck
   . concat
   . sortBy (flip compare `on` length)
-  . map _getDeck
+  . map (view getDeck)
 
 splitInto :: Int -> Deck a -> [Deck a]
 splitInto n (Deck xs)
