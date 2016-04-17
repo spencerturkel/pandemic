@@ -96,6 +96,11 @@ shuffleDeck deck global =
     -- do initial infections, draw 3 and put 3 on each, draw 3 and put 2 on each, draw 3 and put 1 on each
 doInitialInfections = undefined
 
+doNextInfection :: (MonadError Exception m, MonadState Globals m) => m ()
+doNextInfection = do
+  city <- drawFrom infectionDeck
+  infect city $ colorOfCity city
+
 infect ::
   (MonadError Exception m, MonadState Globals m) =>
   City -> DiseaseColor -> m ()

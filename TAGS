@@ -1,64 +1,72 @@
 
-./City.hs,1448
-citiesConnected citiesConnected2,3
-citiesConnected citiesConnected3,4
-data CityCity6,7
-  = SanFranciscoSanFrancisco7,8
-  | ChicagoChicago8,9
-  | TorontoToronto9,10
-  | AtlantaAtlanta10,11
-  | WashingtonWashington11,12
-  | NewYorkNewYork12,13
-  | LondonLondon13,14
-  | MadridMadrid14,15
-  | ParisParis15,16
-  | EssenEssen16,17
-  | MilanMilan17,18
-  | StPetersburgStPetersburg18,19
-  | LosAngelesLosAngeles19,20
-  | MexicoCityMexicoCity20,21
-  | MiamiMiami21,22
-  | BogotaBogota22,23
-  | LimaLima23,24
-  | SantiagoSantiago24,25
-  | SaoPauloSaoPaulo25,26
-  | BuenosAiresBuenosAires26,27
-  | LagosLagos27,28
-  | KinshashaKinshasha28,29
-  | JohannesburgJohannesburg29,30
-  | KhartoumKhartoum30,31
-  | AlgiersAlgiers31,32
-  | CairoCairo32,33
-  | IstanbulIstanbul33,34
-  | BaghdadBaghdad34,35
-  | RiyadhRiyadh35,36
-  | MoscowMoscow36,37
-  | TehranTehran37,38
-  | KarachiKarachi38,39
-  | MumbaiMumbai39,40
-  | DelhiDelhi40,41
-  | KolkataKolkata41,42
-  | ChennaiChennai42,43
-  | BangkokBangkok43,44
-  | JakartaJakarta44,45
-  | HoChiMinhCityHoChiMinhCity45,46
-  | HongKongHongKong46,47
-  | ShanghaiShanghai47,48
-  | BeijingBeijing48,49
-  | SeoulSeoul49,50
-  | TokyoTokyo50,51
-  | OsakaOsaka51,52
-  | TaipeiTaipei52,53
-  | ManilaManila53,54
-  | SydneySydney54,55
-connectionsFromCity connectionsFromCity58,59
-connectionsFromCity connectionsFromCity59,60
+./City.hs,1518
+citiesConnected citiesConnected4,5
+citiesConnected citiesConnected5,6
+data CityCity8,9
+  = SanFranciscoSanFrancisco9,10
+  | ChicagoChicago10,11
+  | TorontoToronto11,12
+  | AtlantaAtlanta12,13
+  | WashingtonWashington13,14
+  | NewYorkNewYork14,15
+  | LondonLondon15,16
+  | MadridMadrid16,17
+  | ParisParis17,18
+  | EssenEssen18,19
+  | MilanMilan19,20
+  | StPetersburgStPetersburg20,21
+  | LosAngelesLosAngeles21,22
+  | MexicoCityMexicoCity22,23
+  | MiamiMiami23,24
+  | BogotaBogota24,25
+  | LimaLima25,26
+  | SantiagoSantiago26,27
+  | SaoPauloSaoPaulo27,28
+  | BuenosAiresBuenosAires28,29
+  | LagosLagos29,30
+  | KinshashaKinshasha30,31
+  | JohannesburgJohannesburg31,32
+  | KhartoumKhartoum32,33
+  | AlgiersAlgiers33,34
+  | CairoCairo34,35
+  | IstanbulIstanbul35,36
+  | BaghdadBaghdad36,37
+  | RiyadhRiyadh37,38
+  | MoscowMoscow38,39
+  | TehranTehran39,40
+  | KarachiKarachi40,41
+  | MumbaiMumbai41,42
+  | DelhiDelhi42,43
+  | KolkataKolkata43,44
+  | ChennaiChennai44,45
+  | BangkokBangkok45,46
+  | JakartaJakarta46,47
+  | HoChiMinhCityHoChiMinhCity47,48
+  | HongKongHongKong48,49
+  | ShanghaiShanghai49,50
+  | BeijingBeijing50,51
+  | SeoulSeoul51,52
+  | TokyoTokyo52,53
+  | OsakaOsaka53,54
+  | TaipeiTaipei54,55
+  | ManilaManila55,56
+  | SydneySydney56,57
+colorOfCity colorOfCity59,60
+colorOfCity colorOfCity60,61
+connectionsFromCity connectionsFromCity111,112
+connectionsFromCity connectionsFromCity112,113
 
 ./PlayerCard.hs,109
 data PlayerCardPlayerCard5,6
   = PlayerCard PlayerCard6,7
   | Event Event7,8
   | EpidemicEpidemic8,9
+
+./Exception.hs,205
+data ExceptionException2,3
+  = DrawFromEmptyPlayerDeckDrawFromEmptyPlayerDeck3,4
+  | DrawFromEmptyInfectionDeckDrawFromEmptyInfectionDeck4,5
+  | DrawFromEmptyDiseasePileDrawFromEmptyDiseasePile5,6
 
 ./Cures.hs,312
 data CureStatusCureStatus6,7
@@ -88,13 +96,24 @@ data InfectionRateInfectionRate12,13
 getRate getRate18,19
 getRate getRate19,20
 
-./Diseases.hs,229
-data DiseasesDiseases6,7
-  = Diseases Diseases7,8
-  = Diseases { _blackCubes _blackCubes7,8
-             , _blueCubes _blueCubes8,9
-             , _redCubes _redCubes9,10
-             , _yellowCubes _yellowCubes10,11
+./Diseases.hs,566
+data DiseaseColorDiseaseColor6,7
+  = BlackBlack7,8
+  | BlueBlue8,9
+  | RedRed9,10
+  | YellowYellow10,11
+data DiseasesDiseases13,14
+  = Diseases Diseases14,15
+  = Diseases { _blackCubes _blackCubes14,15
+             , _blueCubes _blueCubes15,16
+             , _redCubes _redCubes16,17
+             , _yellowCubes _yellowCubes17,18
+addDisease addDisease22,23
+addDisease addDisease23,24
+removeDisease removeDisease28,29
+removeDisease removeDisease29,30
+availableDiseases availableDiseases34,35
+availableDiseases availableDiseases35,36
 
 ./commands.hs,83
 module Commands Commands0,1
@@ -102,48 +121,55 @@ data CommandF CommandF4,5
   = ActionF ActionF5,6
 
 ./Deck.hs,464
-newtype Deck Deck14,15
-  = Deck Deck15,16
-  = Deck { _getDeck _getDeck15,16
-data DeckExceptionDeckException20,21
-  = DrawFromEmptyDeckDrawFromEmptyDeck21,22
+newtype Deck Deck13,14
+  = Deck Deck14,15
+  = Deck { _getDeck _getDeck14,15
+data DeckExceptionDeckException19,20
+  = DrawFromEmptyDeckDrawFromEmptyDeck20,21
+addToDeck addToDeck23,24
 addToDeck addToDeck24,25
-addToDeck addToDeck25,26
+drawFromDeck drawFromDeck26,27
 drawFromDeck drawFromDeck27,28
-drawFromDeck drawFromDeck28,29
-stackSmallToBig stackSmallToBig36,37
-stackSmallToBigstackSmallToBig37,38
+stackSmallToBig stackSmallToBig35,36
+stackSmallToBigstackSmallToBig36,37
+splitInto splitInto42,43
 splitInto splitInto43,44
-splitInto splitInto44,45
+shuffle shuffle55,56
 shuffle shuffle56,57
-shuffle shuffle57,58
 
 ./Role.hs,37
 data RoleRole2,3
   = RoleRole3,4
 
-./Globals.hs,929
-data GlobalsGlobals21,22
-  = Globals Globals22,23
-  = Globals { _spaces _spaces22,23
-            , _players _players23,24
-            , _playerLocations _playerLocations24,25
-            , _infectionRateCounter _infectionRateCounter25,26
-            , _outbreakCounter _outbreakCounter26,27
-            , _cures _cures27,28
-            , _diseaseSupply _diseaseSupply28,29
-            , _researchStationSupply _researchStationSupply29,30
-            , _infectionDeck _infectionDeck30,31
-            , _infectionDiscard _infectionDiscard31,32
-            , _playerDeck _playerDeck32,33
-            , _playerDiscard _playerDiscard33,34
-            , _generator _generator34,35
-            , _eventEffects _eventEffects35,36
-makeGlobals makeGlobals40,41
-makeGlobals makeGlobals41,42
-shuffleDeck shuffleDeck70,71
-shuffleDeck shuffleDeck71,72
---doInitialInfections --doInitialInfections77,78
+./Globals.hs,1157
+data GlobalsGlobals24,25
+  = Globals Globals25,26
+  = Globals { _spaces _spaces25,26
+            , _researchLocations _researchLocations26,27
+            , _players _players27,28
+            , _playerLocations _playerLocations28,29
+            , _infectionRateCounter _infectionRateCounter29,30
+            , _outbreakCounter _outbreakCounter30,31
+            , _cures _cures31,32
+            , _diseaseSupply _diseaseSupply32,33
+            , _researchStationSupply _researchStationSupply33,34
+            , _infectionDeck _infectionDeck34,35
+            , _infectionDiscard _infectionDiscard35,36
+            , _playerDeck _playerDeck36,37
+            , _playerDiscard _playerDiscard37,38
+            , _generator _generator38,39
+            , _eventEffects _eventEffects39,40
+makeGlobals makeGlobals44,45
+makeGlobals makeGlobals45,46
+drawFrom drawFrom79,80
+drawFrom drawFrom82,83
+shuffleDeck shuffleDeck88,89
+shuffleDeck shuffleDeck89,90
+doInitialInfections doInitialInfections96,97
+infectFromDeck infectFromDeck99,100
+infectFromDeck infectFromDeck100,101
+infect infect104,105
+infect infect106,107
 
 ./EventEffect.hs,66
 data EventEffectEventEffect2,3

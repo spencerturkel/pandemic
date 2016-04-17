@@ -1,5 +1,7 @@
 module City where
 
+import           Diseases (DiseaseColor (..))
+
 citiesConnected :: City -> City -> Bool
 citiesConnected x y = x `elem` connectionsFromCity y
 
@@ -54,6 +56,57 @@ data City
   | Manila
   | Sydney
   deriving (Show, Read, Eq, Ord, Enum, Bounded)
+
+colorOfCity :: City -> DiseaseColor
+colorOfCity   SanFrancisco = Blue
+colorOfCity   Chicago = Blue
+colorOfCity   Toronto = Blue
+colorOfCity   Atlanta = Blue
+colorOfCity   Washington = Blue
+colorOfCity   NewYork = Blue
+colorOfCity   London = Blue
+colorOfCity   Madrid = Blue
+colorOfCity   Paris = Blue
+colorOfCity   Essen = Blue
+colorOfCity   Milan = Blue
+colorOfCity   StPetersburg = Blue
+colorOfCity   LosAngeles = Yellow
+colorOfCity   MexicoCity = Yellow
+colorOfCity   Miami = Yellow
+colorOfCity   Bogota = Yellow
+colorOfCity   Lima = Yellow
+colorOfCity   Santiago = Yellow
+colorOfCity   SaoPaulo = Yellow
+colorOfCity   BuenosAires = Yellow
+colorOfCity   Lagos = Yellow
+colorOfCity   Kinshasha = Yellow
+colorOfCity   Johannesburg = Yellow
+colorOfCity   Khartoum = Yellow
+colorOfCity   Algiers = Black
+colorOfCity   Cairo = Black
+colorOfCity   Istanbul = Black
+colorOfCity   Baghdad = Black
+colorOfCity   Riyadh = Black
+colorOfCity   Moscow = Black
+colorOfCity   Tehran = Black
+colorOfCity   Karachi = Black
+colorOfCity   Mumbai = Black
+colorOfCity   Delhi = Black
+colorOfCity   Kolkata = Black
+colorOfCity   Chennai = Black
+colorOfCity   Bangkok = Red
+colorOfCity   Jakarta = Red
+colorOfCity   HoChiMinhCity = Red
+colorOfCity   HongKong = Red
+colorOfCity   Shanghai = Red
+colorOfCity   Beijing = Red
+colorOfCity   Seoul = Red
+colorOfCity   Tokyo = Red
+colorOfCity   Osaka = Red
+colorOfCity   Taipei = Red
+colorOfCity   Manila = Red
+colorOfCity   Sydney = Red
+
 
 -- Manually enumerated, using a clockwise scanning pattern from 12 o'clock.
 connectionsFromCity :: City -> [City]
@@ -240,3 +293,4 @@ connectionsFromCity Manila = [ Taipei
 connectionsFromCity Sydney = [ LosAngeles
                              , Jakarta
                              , Manila ]
+
