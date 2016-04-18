@@ -64,9 +64,9 @@ data PlayerCardPlayerCard5,6
 
 ./Exception.hs,205
 data ExceptionException2,3
-  = DrawFromEmptyPlayerDeckDrawFromEmptyPlayerDeck3,4
+  = DrawFromEmptyDiseasePileDrawFromEmptyDiseasePile3,4
   | DrawFromEmptyInfectionDeckDrawFromEmptyInfectionDeck4,5
-  | DrawFromEmptyDiseasePileDrawFromEmptyDiseasePile5,6
+  | DrawFromEmptyPlayerDeckDrawFromEmptyPlayerDeck5,6
 
 ./Cures.hs,312
 data CureStatusCureStatus6,7
@@ -121,11 +121,11 @@ data CommandF CommandF4,5
   = ActionF ActionF5,6
 
 ./Deck.hs,464
-newtype Deck Deck13,14
-  = Deck Deck14,15
-  = Deck { _getDeck _getDeck14,15
-data DeckExceptionDeckException19,20
-  = DrawFromEmptyDeckDrawFromEmptyDeck20,21
+data DeckExceptionDeckException13,14
+  = DrawFromEmptyDeckDrawFromEmptyDeck14,15
+newtype Deck Deck17,18
+  = Deck Deck18,19
+  = Deck { _getDeck _getDeck18,19
 addToDeck addToDeck23,24
 addToDeck addToDeck24,25
 drawFromDeck drawFromDeck26,27
@@ -141,35 +141,37 @@ shuffle shuffle56,57
 data RoleRole2,3
   = RoleRole3,4
 
-./Globals.hs,1157
-data GlobalsGlobals24,25
-  = Globals Globals25,26
-  = Globals { _spaces _spaces25,26
-            , _researchLocations _researchLocations26,27
-            , _players _players27,28
-            , _playerLocations _playerLocations28,29
-            , _infectionRateCounter _infectionRateCounter29,30
-            , _outbreakCounter _outbreakCounter30,31
-            , _cures _cures31,32
-            , _diseaseSupply _diseaseSupply32,33
-            , _researchStationSupply _researchStationSupply33,34
-            , _infectionDeck _infectionDeck34,35
-            , _infectionDiscard _infectionDiscard35,36
-            , _playerDeck _playerDeck36,37
-            , _playerDiscard _playerDiscard37,38
-            , _generator _generator38,39
-            , _eventEffects _eventEffects39,40
-makeGlobals makeGlobals44,45
+./Globals.hs,1250
+data GlobalsGlobals25,26
+  = Globals Globals26,27
+  = Globals { _spaces _spaces26,27
+            , _researchLocations _researchLocations27,28
+            , _players _players28,29
+            , _playerLocations _playerLocations29,30
+            , _infectionRateCounter _infectionRateCounter30,31
+            , _outbreakCounter _outbreakCounter31,32
+            , _cures _cures32,33
+            , _diseaseSupply _diseaseSupply33,34
+            , _researchStationSupply _researchStationSupply34,35
+            , _infectionDeck _infectionDeck35,36
+            , _infectionDiscard _infectionDiscard36,37
+            , _playerDeck _playerDeck37,38
+            , _playerDiscard _playerDiscard38,39
+            , _generator _generator39,40
+            , _eventEffects _eventEffects40,41
 makeGlobals makeGlobals45,46
-drawFrom drawFrom79,80
-drawFrom drawFrom82,83
-shuffleDeck shuffleDeck88,89
+makeGlobals makeGlobals46,47
+drawFrom drawFrom80,81
+drawFrom drawFrom83,84
 shuffleDeck shuffleDeck89,90
-doInitialInfections doInitialInfections96,97
-infectFromDeck infectFromDeck99,100
-infectFromDeck infectFromDeck100,101
-infect infect104,105
-infect infect106,107
+shuffleDeck shuffleDeck90,91
+doInitialInfections doInitialInfections97,98
+doInitialInfections doInitialInfections98,99
+doNextInfection doNextInfection112,113
+doNextInfection doNextInfection113,114
+infect infect119,120
+infect infect122,123
+insertEpidemics insertEpidemics129,130
 
 ./EventEffect.hs,66
 data EventEffectEventEffect2,3
