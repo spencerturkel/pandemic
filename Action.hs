@@ -38,7 +38,7 @@ data ActionF k
   | Treat DiseaseColor (Bool -> k)
   | GiveCard PlayerRef (Bool -> k)
   | TakeCard (Bool -> k)
-  | DiscoverCure DiseaseColor (Bool -> k)
+  | DiscoverCure (Lens' Player [City]) (Bool -> k)
   | RoleAbility Ability (Bool -> k)
   deriving (Functor)
 
@@ -83,8 +83,8 @@ giveCard ref = liftF $ GiveCard ref id
 takeCard :: Monad m => ActionT m Bool
 takeCard = liftF $ TakeCard id
 
-discoverCure :: Monad m => DiseaseColor -> ActionT m Bool
-discoverCure color = liftF $ DiscoverCure color id
+discoverCure :: Monad m => Lens' Player [City] -> ActionT m Bool
+discoverCure ref = liftF $ DiscoverCure ref id
 
 roleAbility :: Monad m => Ability -> ActionT m Bool
 roleAbility ability = liftF $ RoleAbility ability id
@@ -100,7 +100,7 @@ data CoActionF k
               , _treatH :: DiseaseColor -> (Bool, k)
               , _giveCardH :: PlayerRef -> (Bool, k)
               , _takeCardH :: PlayerCard -> (Bool, k)
-              , _discoverCureH :: DiseaseColor -> (Bool, k)
+              , _discoverCureH :: Lens' Player [City] -> (Bool, k)
               , _roleAbilityH :: Ability -> (Bool, k)
               }
 makeLenses ''CoActionF
@@ -123,7 +123,7 @@ type CoAction a = Cofree CoActionF a
 type Target = (Globals, Lens' Globals Player)
 
 (?%~) mx f = mx %~ fmap f
-infixr 4 ?%~ 
+infixr 4 ?%~
 
 mkCoAction :: Target -> CoAction Target
 mkCoAction = coiter go
@@ -235,7 +235,6 @@ coTreat target@(globals, playerLens) color =
          & _1.diseaseSupply %~ addDisease color)
     else
       (False, target)
-      
 
 coGiveCard :: Target -> PlayerRef -> (Bool, Target)
 coGiveCard target@(globals, playerLens) ref =
@@ -272,8 +271,27 @@ coTakeCard target@(globals, playerLens) card =
              id
         )
 
-coDiscoverCure :: Target -> DiseaseColor -> (Bool, Target)
-coDiscoverCure = undefined
+coDiscoverCure :: Target -> Lens' Player [City] -> (Bool, Target)
+coDiscoverCure target@(globals, playerLens) ref =
+  let
+    cards = globals^.playerLens.ref
+  in
+    case Data.List.uncons cards of
+      Nothing -> (False, target)
+      Just (x,xs) -> 
+        let
+          color = colorOfCity x
+        in
+          if all (== color) $ map colorOfCity xs then
+            (True, target
+             & _1.playerLens.playerHand %~ (\\ map PlayerCard cards)
+             & if globals^.diseaseSupply.diseasesOfColor color
+                  == diseasesAmount color then
+                 _1.cures.cureStatus color .~ Eradicated
+               else
+                 id)
+          else
+            (False, target)
 
 coRoleAbility :: Target -> Ability -> (Bool, Target)
 coRoleAbility = undefined

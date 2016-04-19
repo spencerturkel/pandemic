@@ -8,3 +8,7 @@ data PlayerCard
   | Event EventEffect
   | Epidemic
   deriving (Show, Read, Eq, Ord)
+
+isPlayerCard :: PlayerCard -> Bool
+isPlayerCard (PlayerCard _) = True
+isPlayerCard _ = False
