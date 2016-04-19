@@ -74,3 +74,6 @@ drawFrom target = do
     (card, deck') <- runStateT drawFromDeck deck
     target .= deck'
     return card
+
+doEvent :: EventEffect -> Globals -> Globals
+doEvent = undefined -- TODO

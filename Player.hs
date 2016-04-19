@@ -23,3 +23,6 @@ data Player
            }
     deriving (Show, Read, Eq, Ord)
 makeLenses ''Player
+
+handLimit :: Int
+handLimit = 7

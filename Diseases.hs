@@ -1,3 +1,4 @@
+{-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Diseases where
@@ -11,6 +12,9 @@ data DiseaseColor
   | Yellow
   deriving (Show, Read, Eq, Ord, Bounded, Enum)
 
+diseasesAmount :: DiseaseColor -> Int
+diseasesAmount = const 24
+
 data Diseases
   = Diseases { _blackCubes :: Int
              , _blueCubes :: Int
@@ -19,6 +23,12 @@ data Diseases
              }
   deriving (Show, Read, Eq)
 makeLenses ''Diseases
+
+diseasesOfColor :: DiseaseColor -> Lens' Diseases Int
+diseasesOfColor Black = blackCubes
+diseasesOfColor Blue = blueCubes
+diseasesOfColor Red = redCubes
+diseasesOfColor Yellow = yellowCubes
 
 addDisease :: DiseaseColor -> Diseases -> Diseases
 addDisease Black = blackCubes +~ 1
