@@ -7,14 +7,14 @@ import Control.Lens
 import           PlayerCard
 
 data Role
-  = ContingencyPlanner
+  = ContingencyPlanner (Maybe PlayerCard)
   | Dispatcher
   | Medic
   | OperationsExpert
   | QuarantineSpecialist
   | Researcher
   | Scientist
-  deriving (Show, Read, Eq, Ord, Enum, Bounded)
+  deriving (Show, Read, Eq, Ord)
 
 data Player
   = Player { _playerNumber :: Int

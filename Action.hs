@@ -294,4 +294,5 @@ coDiscoverCure target@(globals, playerLens) ref =
             (False, target)
 
 coRoleAbility :: Target -> Ability -> (Bool, Target)
-coRoleAbility = undefined
+coRoleAbility target@(globals, playerLens) ability = -- TODO
+  undefined
