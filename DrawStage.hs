@@ -4,12 +4,15 @@
 
 module DrawStage where
 
-import Control.Lens
+import Control.Lens hiding (uncons)
 import Control.Monad.Except
 import Control.Monad.State
 import Data.List
 
-import Deck(DeckException(..))
+import City
+import Cures
+import Deck
+import Diseases
 import Exception
 import Globals
 import Player
@@ -39,4 +42,22 @@ drawFromPlayerDeck = do
   either (const $ throwError PlayerDeckExhausted) return card
 
 doEpidemic :: (MonadError Loseable m, MonadState Globals m) => m ()
-doEpidemic = undefined
+doEpidemic = do
+  infectionRateCounter %= succ
+  Just (city, deck) <- uncons . reverse <$> use (infectionDeck.getDeck)
+  epidemicInfect city
+  infectionDiscard %= addToDeck city
+  modify $ shuffleDeck infectionDiscard
+  discarded <- use (infectionDiscard.getDeck)
+  infectionDiscard .= Deck []
+  infectionDeck .= Deck (discarded ++ reverse deck)
+
+epidemicInfect :: (MonadError Loseable m, MonadState Globals m) => City -> m ()
+epidemicInfect city = do
+  let color = colorOfCity city
+      spaceLens = spaces.at city.non undefined.diseasesOfColor color
+  count <- use spaceLens
+  if count == 0 then
+    replicateM_ 3 $ infect city color
+    else
+    replicateM_ (4 - count) $ infect city color

@@ -43,21 +43,27 @@ data Globals
 makeLenses ''Globals
 
 infect ::
-  (MonadError Exception m, MonadState Globals m) =>
+  (MonadError Loseable m, MonadState Globals m) =>
   City -> DiseaseColor -> m ()
 infect city color = do
-  spaces %= Map.adjust (addDisease color) city
-  diseaseSupply %= removeDisease color
-  supply <- use diseaseSupply
-  unless (availableDiseases supply) $
-    throwError DrawFromEmptyDiseasePile
+  status <- use (cures.cureStatus color)
+  count <- use (spaces.at city.non undefined.diseasesOfColor color)
+  unless (status == Eradicated) $
+    if count == 3 then
+      doOutbreak city
+      else do
+      spaces %= Map.adjust (addDisease color) city
+      diseaseSupply %= removeDisease color
+      supply <- use diseaseSupply
+      unless (availableDiseases supply) $
+        throwError $ DiseaseExhausted color
 
-doNextInfection :: (MonadError Exception m, MonadState Globals m) => m ()
+doNextInfection :: (MonadError Loseable m, MonadState Globals m) => m ()
 doNextInfection = do
-  c <- runExceptT (drawFrom infectionDeck :: MonadState Globals m => ExceptT DeckException m City)
-  case c of
-    Left _ -> throwError DrawFromEmptyInfectionDeck
-    Right city -> infect city $ colorOfCity city
+  Right city <-
+    runExceptT (drawFrom infectionDeck
+                :: MonadState Globals m => ExceptT DeckException m City)
+  infect city $ colorOfCity city
 
 shuffleDeck :: Lens' Globals (Deck a) -> Globals -> Globals
 shuffleDeck deck global =
@@ -77,3 +83,11 @@ drawFrom target = do
 
 doEvent :: EventEffect -> Globals -> Globals
 doEvent = undefined -- TODO
+
+doOutbreak :: (MonadError Loseable m, MonadState Globals m) => City -> m ()
+doOutbreak city = go Map.empty city
+  where
+    go ::
+      (MonadError Loseable m, MonadState Globals m)
+      => Map City Bool -> City -> m ()
+    go map city = undefined
