@@ -42,21 +42,31 @@ data Globals
     deriving (Show, Read)
 makeLenses ''Globals
 
-infect ::
+primInfect ::
   (MonadError Loseable m, MonadState Globals m) =>
-  City -> DiseaseColor -> m ()
-infect city color = do
+  City -> DiseaseColor -> (City -> m ()) -> m ()
+primInfect city color f = do
   status <- use (cures.cureStatus color)
   count <- use (spaces.at city.non undefined.diseasesOfColor color)
   unless (status == Eradicated) $
     if count == 3 then
-      doOutbreak city
+      f city
       else do
       spaces %= Map.adjust (addDisease color) city
       diseaseSupply %= removeDisease color
       supply <- use diseaseSupply
       unless (availableDiseases supply) $
         throwError $ DiseaseExhausted color
+
+infect ::
+  (MonadError Loseable m, MonadState Globals m) =>
+  City -> DiseaseColor -> m ()
+infect city color = primInfect city color doOutbreak
+
+doInfectionStep :: (MonadError Loseable m, MonadState Globals m) => m ()
+doInfectionStep = do
+  count <- fromEnum <$> use infectionRateCounter
+  replicateM_ count doNextInfection
 
 doNextInfection :: (MonadError Loseable m, MonadState Globals m) => m ()
 doNextInfection = do
@@ -85,9 +95,16 @@ doEvent :: EventEffect -> Globals -> Globals
 doEvent = undefined -- TODO
 
 doOutbreak :: (MonadError Loseable m, MonadState Globals m) => City -> m ()
-doOutbreak city = go Map.empty city
+doOutbreak c = go [c] c
   where
-    go ::
-      (MonadError Loseable m, MonadState Globals m)
-      => Map City Bool -> City -> m ()
-    go map city = undefined
+    go cities city = do
+      count <- outbreakCounter <%= succ
+      when (count == maxBound) $ throwError EigthOutbreak
+      (\f ->foldM_ f cities $ connectionsFromCity city)
+        $ \visited location ->
+        if location `elem` visited then
+          return visited
+        else do
+          let visited' = location:visited
+          primInfect location (colorOfCity city) (go visited')
+          return visited'

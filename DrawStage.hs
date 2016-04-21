@@ -26,9 +26,11 @@ drawStage ref = do
   (epidemics, handCards) <-
     partition (== Epidemic)
     <$> replicateM 2 drawFromPlayerDeck
-  replicateM_ (length epidemics) $ do
+  unless (null epidemics) $ do
     doEpidemic
-    --promptEvent TODO
+    when (length epidemics > 1) $ do
+      --promptEvent TODO
+      doEpidemic
   hand <- ref.playerHand <<>= handCards
   return ()
   -- when (length hand > 7) $ promptDiscard hand TODO
