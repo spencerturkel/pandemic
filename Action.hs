@@ -37,7 +37,7 @@ data ActionF k
   | Build City (Bool -> k)
   | Treat DiseaseColor (Bool -> k)
   | GiveCard PlayerRef (Bool -> k)
-  | TakeCard (Bool -> k)
+  | TakeCard PlayerCard (Bool -> k)
   | DiscoverCure (Lens' Player [City]) (Bool -> k)
   | RoleAbility Ability (Bool -> k)
   deriving (Functor)
@@ -80,8 +80,8 @@ treat color = liftF $ Treat color id
 giveCard :: Monad m => PlayerRef -> ActionT m Bool
 giveCard ref = liftF $ GiveCard ref id
 
-takeCard :: Monad m => ActionT m Bool
-takeCard = liftF $ TakeCard id
+takeCard :: Monad m => PlayerCard -> ActionT m Bool
+takeCard c = liftF $ TakeCard c id
 
 discoverCure :: Monad m => Lens' Player [City] -> ActionT m Bool
 discoverCure ref = liftF $ DiscoverCure ref id
@@ -278,7 +278,7 @@ coDiscoverCure target@(globals, playerLens) ref =
   in
     case Data.List.uncons cards of
       Nothing -> (False, target)
-      Just (x,xs) -> 
+      Just (x,xs) ->
         let
           color = colorOfCity x
         in
