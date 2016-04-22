@@ -2,8 +2,9 @@
 
 module Player where
 
-import Control.Lens
+import           Control.Lens
 
+import           City
 import           PlayerCard
 
 data Role
@@ -15,6 +16,14 @@ data Role
   | Researcher
   | Scientist
   deriving (Show, Read, Eq, Ord)
+
+data Ability
+  = ContingencyPlannerEvent PlayerCard
+  | DispatcherMoveOtherPawnToCityWithAnotherPawn Player Player
+  | DispatcherMoveAnotherPawnAsIfOwn Player City
+  | OperationsExpertBuildResearch
+  | OperationsExpertMoveFromResearch City
+  deriving (Show, Read)
 
 data Player
   = Player { _playerNumber :: Int

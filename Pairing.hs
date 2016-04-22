@@ -2,17 +2,18 @@
 
 module Pairing where
 
-import Control.Lens hiding ((:<))
-import Control.Comonad.Cofree
-import Control.Monad.Free
+import           Control.Comonad.Cofree
+import           Control.Lens           hiding ((:<))
+import           Control.Monad.Free
 
-import Action
+import           Action
+import           CoAction
 
-class (Functor f, Functor g) => Pairing f g where
+class Pairing f g where
   pair :: (a -> b -> r) -> f a -> g b -> r
 
 instance Pairing ((->) c) ((,) c) where
-  pair f g (x, y) = uncurry f (g x, y)
+  pair f g (x, y) = f (g x) y
 
 instance Pairing f g => Pairing (Cofree f) (Free g) where
   pair p (a :< _) (Pure x) = p a x
@@ -21,7 +22,7 @@ instance Pairing f g => Pairing (Cofree f) (Free g) where
 instance Pairing ActionF CoActionF where
   pair f action coaction =
     let
-      (x, y) =
+      (g, x) =
         case action of
           Drive city k -> (k, (coaction^.driveH) city)
           DirectFlight city k -> (k, (coaction^.directFlightH) city)
@@ -34,4 +35,4 @@ instance Pairing ActionF CoActionF where
           DiscoverCure ref k -> (k, (coaction^.discoverCureH) ref)
           RoleAbility ability k -> (k, (coaction^.roleAbilityH) ability)
     in
-      pair f x y
+      pair f g x
