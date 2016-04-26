@@ -21,7 +21,7 @@ data ActionF k
   | ShuttleFlight City (Bool -> k)
   | Build City (Bool -> k)
   | Treat DiseaseColor (Bool -> k)
-  | GiveCard PlayerRef (Bool -> k)
+  | GiveCard PlayerRef PlayerCard (Bool -> k)
   | TakeCard PlayerCard (Bool -> k)
   | DiscoverCure (Lens' Player [City]) (Bool -> k)
   | RoleAbility Ability (Bool -> k)
@@ -47,8 +47,8 @@ build city = liftF $ Build city id
 treat :: Monad m => DiseaseColor -> ActionT m Bool
 treat color = liftF $ Treat color id
 
-giveCard :: Monad m => PlayerRef -> ActionT m Bool
-giveCard ref = liftF $ GiveCard ref id
+giveCard :: Monad m => PlayerRef -> PlayerCard -> ActionT m Bool
+giveCard ref card = liftF $ GiveCard ref card id
 
 takeCard :: Monad m => PlayerCard -> ActionT m Bool
 takeCard c = liftF $ TakeCard c id

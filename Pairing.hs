@@ -29,7 +29,7 @@ instance Pairing ActionF CoActionF where
           ShuttleFlight city k -> (k, (coaction^.shuttleFlightH) city)
           Build city k -> (k, (coaction^.buildH) city)
           Treat color k -> (k, (coaction^.treatH) color)
-          GiveCard ref k -> (k, (coaction^.giveCardH) ref)
+          GiveCard ref city k -> (k, (coaction^.giveCardH) ref city)
           TakeCard city k -> (k, (coaction^.takeCardH) city)
           DiscoverCure ref k -> (k, (coaction^.discoverCureH) ref)
           RoleAbility ability k -> (k, (coaction^.roleAbilityH) ability)

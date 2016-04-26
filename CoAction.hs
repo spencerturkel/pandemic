@@ -27,7 +27,7 @@ data CoActionF k
               , _shuttleFlightH :: City -> (Bool, k)
               , _buildH         :: City -> (Bool, k)
               , _treatH         :: DiseaseColor -> (Bool, k)
-              , _giveCardH      :: PlayerRef -> (Bool, k)
+              , _giveCardH      :: PlayerRef -> PlayerCard -> (Bool, k)
               , _takeCardH      :: PlayerCard -> (Bool, k)
               , _discoverCureH  :: Lens' Player [City] -> (Bool, k)
               , _roleAbilityH   :: Ability -> (Bool, k)
@@ -41,7 +41,7 @@ instance Functor CoActionF where
                         , _shuttleFlightH = fmap f <$> _shuttleFlightH co
                         , _buildH = fmap f <$> _buildH co
                         , _treatH = fmap f <$> _treatH co
-                        , _giveCardH = fmap f <$> _giveCardH co
+                        , _giveCardH = fmap (fmap f) <$> _giveCardH co
                         , _takeCardH = fmap f <$> _takeCardH co
                         , _discoverCureH = fmap f <$> _discoverCureH co
                         , _roleAbilityH = fmap f <$> _roleAbilityH co
@@ -164,19 +164,26 @@ coTreat target@(globals, playerLens) color =
     else
       (False, target)
 
-coGiveCard :: Target -> PlayerRef -> (Bool, Target)
-coGiveCard target@(globals, playerLens) ref =
+coGiveCard :: Target -> PlayerRef -> PlayerCard -> (Bool, Target)
+coGiveCard target@(globals, playerLens) ref card =
   let
     player = globals^.playerLens
     fromPlayer = globals^.ref
+    handSize = fromPlayer^.playerHand.to length
     Just location = globals^.playerLocations.at player
     Just otherLocation = globals^.playerLocations.at fromPlayer
     playerHasCard = PlayerCard location `elem` player^.playerHand
   in
+    -- TODO Check other player's hand limit, discard
     if location == otherLocation && playerHasCard then
       (True, target
        & _1.playerLens.playerHand %~ filter (/= PlayerCard location)
-       & _1.ref.playerHand %~ (PlayerCard location:))
+       & _1.ref.playerHand %~ (PlayerCard location:)
+       & if handSize + 1 > handLimit then
+           _1.ref.playerHand %~ filter (/= card)
+         else
+           id
+      )
     else
       (False, target)
 
