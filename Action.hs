@@ -29,21 +29,6 @@ data ActionF k
 
 type ActionT m a = FreeT ActionF m a
 
---interpret :: Monad m => Globals -> Player -> ActionT m r -> m r
---interpret globals player action = do
---  act <- action
---  case act of
---    Pure x -> return x
---    Free (Drive city f) ->
---      let
---        canReach = citiesConnected city $ globals ^?! playerLocations.at player
---        newGlobals = if canReach then
---                       globals ^. playerLocations. at player .~ city
---                     else
---                       globals
---      in
---        interpret $ f canReach
-
 drive :: Monad m => City -> ActionT m Bool
 drive city = liftF $ Drive city id
 
