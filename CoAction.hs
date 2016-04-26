@@ -16,10 +16,9 @@ import           Diseases
 import           Globals
 import           Player
 import           PlayerCard
+import           Target
 
  -- Using a CoFree interpreter, see Dave Laing's blog
-
-type PlayerRef = Lens' Globals Player
 
 data CoActionF k
   = CoActionF { _driveH         :: City -> (Bool, k)
@@ -49,8 +48,6 @@ instance Functor CoActionF where
                         }
 
 type CoAction a = Cofree CoActionF a
-
-type Target = (Globals, Lens' Globals Player)
 
 (?%~) :: Functor f => ASetter s t (f a) (f b) -> (a -> b) -> s -> t
 (?%~) mx f = mx %~ fmap f
