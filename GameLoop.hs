@@ -6,10 +6,16 @@ import Control.Monad
 import Control.Monad.Except
 
 import Globals
+import Interpreter
+import Player
 
-loop g =
-  let
-    playerCycle = g^.players.to cycle
-    f globals player = undefined
-  in
-    void . runExceptT $ foldlM f g playerCycle
+interpret :: Interpreter m => Globals -> m Globals
+interpret g = foldlM f g playerCycle
+  where
+    playerCycle = cycle $ g^..players.traversed.playerNumber
+
+    f :: Interpreter m => Globals -> Int -> m Globals
+    f globals playerNum = do
+      let target = (globals, playerNum)
+      showState target
+      _

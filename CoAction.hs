@@ -70,17 +70,22 @@ mkCoAction = coiter go
                      }
 
 coDrive :: Target -> City -> (Bool, Target)
-coDrive target@(globals, playerLens) city =
+coDrive target@(globals, playerIx) city =
   let
-    player = globals^.playerLens
+    player = globals^.players.to (!! playerIx)
   in
     case citiesConnected city <$> globals^.playerLocations.at player of
       Just True -> (True, target & _1.playerLocations.at player ?~ city)
       _ -> (False, target)
 
 coDirectFlight :: Target -> City -> (Bool, Target)
-coDirectFlight target@(globals, playerLens) city =
+coDirectFlight target@(globals, playerIx) city =
   let
+    playerLens :: Lens' Globals Player
+    playerLens = lens get setter
+      where
+        get g = g^.players.to (!! playerIx)
+        setter g p = g & players.ix playerIx .~ p
     player = globals^.playerLens
     card = PlayerCard city
   in
@@ -92,8 +97,13 @@ coDirectFlight target@(globals, playerLens) city =
       (False, target)
 
 coCharterFlight :: Target -> City -> (Bool, Target)
-coCharterFlight target@(globals, playerLens) city =
+coCharterFlight target@(globals, playerIx) city =
   let
+    playerLens :: Lens' Globals Player
+    playerLens = lens get setter
+      where
+        get g = g^.players.to (!! playerIx)
+        setter g p = g & players.ix playerIx .~ p
     player = globals^.playerLens
     Just location = PlayerCard <$> globals ^. playerLocations.at player
   in
@@ -105,9 +115,9 @@ coCharterFlight target@(globals, playerLens) city =
       (False, target)
 
 coShuttleFlight :: Target -> City -> (Bool, Target)
-coShuttleFlight target@(globals, playerLens) city =
+coShuttleFlight target@(globals, playerIx) city =
   let
-    player = globals^.playerLens
+    player = globals^.players.to (!! playerIx)
     Just location = globals^.playerLocations.at player
     researchAtLocation = globals^.researchLocations.at location
     researchAtCity = globals^.researchLocations.at city
@@ -118,8 +128,14 @@ coShuttleFlight target@(globals, playerLens) city =
       (False, target)
 
 coBuild :: Target -> City -> (Bool, Target)
-coBuild target@(globals, playerLens) city =
+coBuild target@(globals, playerIx) city =
   let
+    playerLens :: Lens' Globals Player
+    playerLens = lens get setter
+      where
+        get g = g^.players.to (!! playerIx)
+        setter g p = g & players.ix playerIx .~ p
+
     player = globals^.playerLens
     Just location = globals^.playerLocations.at player
     supplyEmpty = globals^.researchStationSupply == 1
@@ -138,9 +154,9 @@ coBuild target@(globals, playerLens) city =
       (False, target)
 
 coTreat :: Target -> DiseaseColor -> (Bool, Target)
-coTreat target@(globals, playerLens) color =
+coTreat target@(globals, playerIx) color =
   let
-    player = globals^.playerLens
+    player = globals^.players.to (!! playerIx)
     Just location = globals^.playerLocations.at player
     Just diseases = globals^.spaces.at location
     count = diseases^.diseasesOfColor color
@@ -165,22 +181,31 @@ coTreat target@(globals, playerLens) color =
       (False, target)
 
 coGiveCard :: Target -> PlayerRef -> PlayerCard -> (Bool, Target)
-coGiveCard target@(globals, playerLens) ref card =
+coGiveCard target@(globals, playerIx) ref card =
   let
+    playerLens :: Lens' Globals Player
+    playerLens = lens get setter
+      where
+        get g = g^.players.to (!! playerIx)
+        setter g p = g & players.ix playerIx .~ p
+    refLens :: Lens' Globals Player
+    refLens = lens get setter
+      where
+        get g = g^.players.to (!! ref)
+        setter g p = g & players.ix ref .~ p
     player = globals^.playerLens
-    fromPlayer = globals^.ref
+    fromPlayer = globals^.refLens
     handSize = fromPlayer^.playerHand.to length
     Just location = globals^.playerLocations.at player
     Just otherLocation = globals^.playerLocations.at fromPlayer
     playerHasCard = PlayerCard location `elem` player^.playerHand
   in
-    -- TODO Check other player's hand limit, discard
     if location == otherLocation && playerHasCard then
       (True, target
        & _1.playerLens.playerHand %~ filter (/= PlayerCard location)
-       & _1.ref.playerHand %~ (PlayerCard location:)
+       & _1.refLens.playerHand %~ (PlayerCard location:)
        & if handSize + 1 > handLimit then
-           _1.ref.playerHand %~ filter (/= card)
+           _1.refLens.playerHand %~ filter (/= card)
          else
            id
       )
@@ -188,10 +213,14 @@ coGiveCard target@(globals, playerLens) ref card =
       (False, target)
 
 coTakeCard :: Target -> PlayerCard -> (Bool, Target)
-coTakeCard target@(globals, playerLens) card =
+coTakeCard target@(globals, playerIx) card =
   let
-    player = globals^.playerLens
-    Just location = globals^.playerLocations.at player
+    playerLens :: Lens' Globals Player
+    playerLens = lens get setter
+      where
+        get g = g^.players.to (!! playerIx)
+        setter g p = g & players.ix playerIx .~ p
+    Just location = globals^.playerLocations.at (globals^.playerLens)
   in
     case find (\p -> PlayerCard location `elem` p^.playerHand) (globals^.players) of
       Nothing -> (False, target)
@@ -200,16 +229,21 @@ coTakeCard target@(globals, playerLens) card =
          & _1.playerLens.playerHand %~ (PlayerCard location:)
          & _1.players.traversed.filtered (== other).playerHand
          %~ filter (/= PlayerCard location)
-         & if player^.playerHand.to length > handLimit then
+         & if target^._1.playerLens.playerHand.to length > handLimit then
              _1.playerLens.playerHand %~ filter (/= card)
            else
              id
         )
 
 coDiscoverCure :: Target -> Lens' Player [City] -> (Bool, Target)
-coDiscoverCure target@(globals, playerLens) ref =
+coDiscoverCure target@(globals, playerIx) ref =
   let
-    cards = globals^.playerLens.ref
+    cards = globals^.players.to (!! playerIx).ref
+    playerLens :: Lens' Globals Player
+    playerLens = lens get setter
+      where
+        get g = g^.players.to (!! playerIx)
+        setter g p = g & players.ix playerIx .~ p
   in
     case Data.List.uncons cards of
       Nothing -> (False, target)

@@ -8,6 +8,6 @@ import Control.Lens
 import Globals
 import Player
 
-type PlayerRef = Lens' Globals Player
+type PlayerRef = Int
 
-type Target = (Globals, Lens' Globals Player)
+type Target = (Globals, Int)
