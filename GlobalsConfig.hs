@@ -30,7 +30,7 @@ fromEpidemicNumber = do
   return $ case n of
     Four -> 4
     Five -> 5
-    Six -> 5
+    Six -> 6
 
 data GlobalsConfig
   = GlobalsConfig { _initGen :: StdGen

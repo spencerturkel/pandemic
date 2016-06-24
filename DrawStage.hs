@@ -10,20 +10,20 @@ import Control.Monad.State
 import Data.List
 
 import City
-import Cures
 import Deck
 import Diseases
 import Exception
 import Globals
+import Interpreter
 import Player
 import PlayerCard
 
 drawStage ::
-  (MonadError Loseable m, MonadState Globals m)
+  (Interpreter m, MonadError Loseable m, MonadState Globals m)
   => Lens' Globals Player
   -> m ()
 drawStage ref = do
-  (epidemics, handCards) <-
+  (epidemics, newCards) <-
     partition (== Epidemic)
     <$> replicateM 2 drawFromPlayerDeck
   unless (null epidemics) $ do
@@ -31,9 +31,10 @@ drawStage ref = do
     when (length epidemics > 1) $ do
       --promptEvent TODO
       doEpidemic
-  hand <- ref.playerHand <<>= handCards
-  return ()
-  -- when (length hand > 7) $ promptDiscard hand TODO
+  handSize <- fmap length $ ref.playerHand <<>= newCards
+  when (handSize > 7) $ do
+    card <- getCard
+    ref.playerHand %= filter (/= card)
 
 drawFromPlayerDeck :: (MonadError Loseable m, MonadState Globals m) => m PlayerCard
 drawFromPlayerDeck = do

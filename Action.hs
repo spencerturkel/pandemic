@@ -1,61 +1,23 @@
-{-# LANGUAGE DeriveFunctor      #-}
 {-# LANGUAGE ImpredicativeTypes #-}
 {-# LANGUAGE RankNTypes         #-}
 module Action where
 
 import           Control.Lens
-import           Control.Monad.Trans.Free
 
 import           City
 import           Diseases
-import           Globals
 import           Player
 import           PlayerCard
+import           Target
 
-type PlayerRef = Lens' Globals Player
-
-data ActionF k
-  = Drive City (Bool -> k)
-  | DirectFlight City (Bool -> k)
-  | CharterFlight City (Bool -> k)
-  | ShuttleFlight City (Bool -> k)
-  | Build City (Bool -> k)
-  | Treat DiseaseColor (Bool -> k)
-  | GiveCard PlayerRef PlayerCard (Bool -> k)
-  | TakeCard PlayerCard (Bool -> k)
-  | DiscoverCure (Lens' Player [City]) (Bool -> k)
-  | RoleAbility Ability (Bool -> k)
-  deriving (Functor)
-
-type ActionT m a = FreeT ActionF m a
-
-drive :: Monad m => City -> ActionT m Bool
-drive city = liftF $ Drive city id
-
-directFlight :: Monad m => City -> ActionT m Bool
-directFlight city = liftF $ DirectFlight city id
-
-charterFlight :: Monad m => City -> ActionT m Bool
-charterFlight city = liftF $ CharterFlight city id
-
-shuttleFlight :: Monad m => City -> ActionT m Bool
-shuttleFlight city = liftF $ ShuttleFlight city id
-
-build :: Monad m => City -> ActionT m Bool
-build city = liftF $ Build city id
-
-treat :: Monad m => DiseaseColor -> ActionT m Bool
-treat color = liftF $ Treat color id
-
-giveCard :: Monad m => PlayerRef -> PlayerCard -> ActionT m Bool
-giveCard ref card = liftF $ GiveCard ref card id
-
-takeCard :: Monad m => PlayerCard -> ActionT m Bool
-takeCard c = liftF $ TakeCard c id
-
-discoverCure :: Monad m => Lens' Player [City] -> ActionT m Bool
-discoverCure ref = liftF $ DiscoverCure ref id
-
-roleAbility :: Monad m => Ability -> ActionT m Bool
-roleAbility ability = liftF $ RoleAbility ability id
-
+data Action
+  = Drive City
+  | DirectFlight City
+  | CharterFlight City
+  | ShuttleFlight City
+  | Build City
+  | Treat DiseaseColor
+  | GiveCard PlayerRef PlayerCard
+  | TakeCard PlayerCard
+  | DiscoverCure (Lens' Player [City])
+  | RoleAbility Ability
