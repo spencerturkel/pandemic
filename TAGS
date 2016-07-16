@@ -278,28 +278,18 @@ data ActionAction12,13
   | DiscoverCure DiscoverCure21,22
   | RoleAbility RoleAbility22,23
 
-./flycheck_Interpreter.hs,212
-class Monad m => Interpreter Interpreter12,13
-class Monad m => Interpreter Interpreter12,13
-    showTarget showTarget13,14
-    getAction getAction14,15
-    getCard getCard15,16
-instance instance17,18
-
-./GameLoop.hs,414
+./GameLoop.hs,368
 module GameLoop GameLoop2,3
-runGame runGame18,19
-runGame runGame19,20
-playerCycle playerCycle21,22
-playerCycle playerCycle22,23
-doValidAction doValidAction24,25
-doValidAction doValidAction25,26
-showTargetAndDoNextAction showTargetAndDoNextAction34,35
-showTargetAndDoNextAction showTargetAndDoNextAction35,36
-run run40,41
-run run41,42
-runActions runActions58,59
-runActions runActions59,60
+playerCycle playerCycle16,17
+playerCycle playerCycle17,18
+doValidAction doValidAction19,20
+doValidAction doValidAction20,21
+showTargetAndDoNextAction showTargetAndDoNextAction29,30
+showTargetAndDoNextAction showTargetAndDoNextAction30,31
+run run35,36
+run run36,37
+runActions runActions54,55
+runActions runActions55,56
 
 ./Player.hs,920
 data RoleRole9,10
