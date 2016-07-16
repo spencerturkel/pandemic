@@ -19,7 +19,7 @@ import Player
 import PlayerCard
 
 drawStage ::
-  (Interpreter m, MonadError Loseable m, MonadState Globals m)
+  (MonadError Loseable m, MonadState Globals m, Interpreter m)
   => Lens' Globals Player
   -> m ()
 drawStage ref = do

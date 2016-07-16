@@ -39,22 +39,23 @@ showTargetAndDoNextAction = do
   doValidAction
 
 run :: Interpreter m => Globals -> [Int] -> m Globals
-run globals [] = return globals
-run globals (playerNum:rest) =
-  let
-    target :: Target
-    target = (globals, playerNum)
+run globals = run' globals (playerCycle globals)
+  where
+    run' globals [] = return globals
+    run' globals (playerNum:rest) =
+      let
+        target :: Target
+        target = (globals, playerNum)
 
-    playerLens :: Lens' Globals Player
-    playerLens = lens get setter
-      where
-        get g = g^.players.to (!! playerNum)
-        setter g p = g & players.ix playerNum .~ p
-  in do
-  g <- runActions target
-  Right g' <- runExceptT $ execStateT (drawStage playerLens) g
-
-  run undefined rest
+        playerLens :: Lens' Globals Player
+        playerLens = lens get setter
+          where
+            get g = g^.players.to (!! playerNum)
+            setter g p = g & players.ix playerNum .~ p
+      in do
+      g <- fst <$> runActions target
+      finalState <- runExceptT $ execStateT (drawStage playerLens) g
+      either undefined (`run` rest) finalState
 
 runActions :: Interpreter m => Target -> m Target
 runActions = execStateT $ replicateM 4 showTargetAndDoNextAction

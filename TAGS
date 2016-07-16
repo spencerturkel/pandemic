@@ -173,13 +173,13 @@ doEpidemic doEpidemic47,48
 epidemicInfect epidemicInfect57,58
 epidemicInfect epidemicInfect58,59
 
-./Interpreter.hs,199
---data --data6,7
-class Monad m => Interpreter Interpreter7,8
-class Monad m => Interpreter Interpreter7,8
-    showTarget showTarget8,9
-    getAction getAction9,10
-    getCard getCard10,11
+./Interpreter.hs,212
+class Monad m => Interpreter Interpreter12,13
+class Monad m => Interpreter Interpreter12,13
+    showTarget showTarget13,14
+    getAction getAction14,15
+    getCard getCard15,16
+instance instance17,18
 
 ./Diseases.hs,720
 data DiseaseColorDiseaseColor7,8
@@ -277,6 +277,14 @@ data ActionAction12,13
   | TakeCard TakeCard20,21
   | DiscoverCure DiscoverCure21,22
   | RoleAbility RoleAbility22,23
+
+./flycheck_Interpreter.hs,212
+class Monad m => Interpreter Interpreter12,13
+class Monad m => Interpreter Interpreter12,13
+    showTarget showTarget13,14
+    getAction getAction14,15
+    getCard getCard15,16
+instance instance17,18
 
 ./GameLoop.hs,414
 module GameLoop GameLoop2,3
