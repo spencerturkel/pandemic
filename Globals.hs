@@ -9,9 +9,9 @@ import           Control.Lens
 import           Control.Monad.Except
 import           Control.Monad.State
 --import           Data.Aeson hiding ((.=))
-import           Data.Map.Lazy       (Map)
-import qualified Data.Map.Lazy       as Map
-import GHC.Generics
+import           Data.List
+import           Data.Maybe
+import GHC.Generics(Generic)
 import           System.Random
 
 import           City
@@ -48,13 +48,14 @@ primInfect ::
   (MonadError Loseable m, MonadState Globals m) =>
   City -> DiseaseColor -> (City -> m ()) -> m ()
 primInfect city color f = do
-  status <- use (cures.cureStatus color)
-  count <- use (spaces.at city.non undefined.diseasesOfColor color)
+  status <- use $ cures.cureStatus color
+  ([space], otherSpaces) <- use $ spaces.to (partition ((city ==) . _city))
+  let diseaseCount = space^.diseases.diseasesOfColor color
   unless (status == Eradicated) $
-    if count == 3 then
+    if diseaseCount == 3 then
       f city
       else do
-      spaces %= Map.adjust (addDisease color) city
+      spaces .= (space & diseases %~ addDisease color) : otherSpaces
       diseaseSupply %= removeDisease color
       supply <- use diseaseSupply
       unless (availableDiseases supply) $
