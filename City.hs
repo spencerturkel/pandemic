@@ -1,6 +1,6 @@
 module City where
 
-import           Diseases (DiseaseColor (..))
+import           Diseases
 
 citiesConnected :: City -> City -> Bool
 citiesConnected x y = x `elem` connectionsFromCity y

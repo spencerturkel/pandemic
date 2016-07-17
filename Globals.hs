@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveGeneric      #-}
 {-# LANGUAGE FlexibleContexts      #-}
 {-# LANGUAGE Rank2Types      #-}
 {-# LANGUAGE TemplateHaskell #-}
@@ -7,8 +8,10 @@ module Globals where
 import           Control.Lens
 import           Control.Monad.Except
 import           Control.Monad.State
+--import           Data.Aeson hiding ((.=))
 import           Data.Map.Lazy       (Map)
 import qualified Data.Map.Lazy       as Map
+import GHC.Generics
 import           System.Random
 
 import           City
@@ -21,12 +24,11 @@ import           InfectionRate
 import           OutbreakCounter
 import           Player
 import           PlayerCard
+import           Space
 
 data Globals
-  = Globals { _spaces                :: Map City Diseases
-            , _researchLocations     :: Map City Bool
+  = Globals { _spaces                :: [Space]
             , _players               :: [Player]
-            , _playerLocations       :: Map Player City
             , _infectionRateCounter  :: InfectionRateCounter
             , _outbreakCounter       :: OutbreakCounter
             , _cures                 :: Cures
@@ -39,7 +41,7 @@ data Globals
             , _generator             :: StdGen
             , _eventEffects          :: [EventEffect]
             }
-    deriving (Show, Read)
+    deriving (Show, Read, Generic)
 makeLenses ''Globals
 
 primInfect ::

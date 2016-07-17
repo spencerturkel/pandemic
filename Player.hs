@@ -29,6 +29,7 @@ data Player
   = Player { _playerNumber :: Int
            , _playerHand   :: [PlayerCard]
            , _role         :: Role
+           , _location         :: City
            }
     deriving (Show, Read, Eq, Ord)
 makeLenses ''Player
