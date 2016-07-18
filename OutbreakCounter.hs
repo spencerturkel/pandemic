@@ -1,4 +1,9 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module OutbreakCounter where
+
+import Data.Aeson
+import GHC.Generics
 
 data OutbreakCounter
   = OutbreakZero
@@ -10,4 +15,6 @@ data OutbreakCounter
   | OutbreakSix
   | OutbreakSeven
   | OutbreakEight
-  deriving (Show, Read, Eq, Ord, Enum, Bounded)
+  deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic)
+
+instance ToJSON OutbreakCounter

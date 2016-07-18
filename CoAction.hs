@@ -10,13 +10,32 @@ import           Control.Lens
 import           Control.Monad
 import           Cures
 import           Data.List
+import           Data.Maybe
 
 import           City
 import           Diseases
 import           Globals
 import           Player
 import           PlayerCard
+import           Space
 import           Target
+
+(?%~) :: Functor f => ASetter s t (f a) (f b) -> (a -> b) -> s -> t
+(?%~) mx f = mx %~ fmap f
+infixr 4 ?%~
+
+find' :: (a -> Bool) -> [a] -> a
+find' f = fromJust . find
+
+finding :: (a -> Bool) -> Lens' [a] (Maybe a)
+finding predicate = lens getter setter
+  where
+    getter = find predicate
+
+    setter (x:xs) (Just y)
+      | predicate x = y:xs
+      | otherwise = setter xs (Just y)
+    setter xs _ = xs
 
  -- Using a CoFree interpreter, see Dave Laing's blog
 
@@ -49,10 +68,6 @@ instance Functor CoActionF where
 
 type CoAction a = Cofree CoActionF a
 
-(?%~) :: Functor f => ASetter s t (f a) (f b) -> (a -> b) -> s -> t
-(?%~) mx f = mx %~ fmap f
-infixr 4 ?%~
-
 mkCoAction :: Target -> CoAction Target
 mkCoAction = coiter go
   where
@@ -70,112 +85,86 @@ mkCoAction = coiter go
                      }
 
 coDrive :: Target -> City -> Maybe Target
-coDrive target@(globals, playerIx) city =
-  let
-    player = globals^.players.to (!! playerIx)
-  in
-    case citiesConnected city <$> globals^.playerLocations.at player of
-      Just True -> Just $ target & _1.playerLocations.at player ?~ city
-      _ -> Nothing
+coDrive target destination =
+    if citiesConnected destination $ target^.playerLens.location then
+      Just $ target & playerLens.location .~ destination
+    else
+      Nothing
 
 coDirectFlight :: Target -> City -> Maybe Target
-coDirectFlight target@(globals, playerIx) city =
+coDirectFlight target destination =
   let
-    playerLens :: Lens' Globals Player
-    playerLens = lens get setter
-      where
-        get g = g^.players.to (!! playerIx)
-        setter g p = g & players.ix playerIx .~ p
-    player = globals^.playerLens
-    card = PlayerCard city
+    card = PlayerCard destination
   in
-    if card `elem` player^.playerHand then
+    if card `elem` playerLens^.playerHand then
       Just
       $ target
-      & _1.playerLocations.at player ?~ city
-      & _1.playerLens.playerHand %~ filter (/= card)
+      & playerLens.location .~ destination
+      & playerLens.playerHand %~ delete card
       else
       Nothing
 
 coCharterFlight :: Target -> City -> Maybe Target
-coCharterFlight target@(globals, playerIx) city =
-  let
-    playerLens :: Lens' Globals Player
-    playerLens = lens get setter
-      where
-        get g = g^.players.to (!! playerIx)
-        setter g p = g & players.ix playerIx .~ p
-    player = globals^.playerLens
-    Just location = PlayerCard <$> globals ^. playerLocations.at player
-  in
-    if location `elem` player^.playerHand then
+coCharterFlight target destination =
+    if playerLens^.location.to PlayerCard `elem` playerLens^.playerHand then
       Just $ target
-      & _1.playerLocations.at player ?~ city
-      & _1.playerLens.playerHand %~ filter (/= location)
+      & playerLens.location .~ destination
+      & playerLens.playerHand %~ delete $ PlayerCard destination
     else
       Nothing
 
 coShuttleFlight :: Target -> City -> Maybe Target
-coShuttleFlight target@(globals, playerIx) city =
+coShuttleFlight target destination =
   let
-    player = globals^.players.to (!! playerIx)
-    Just location = globals^.playerLocations.at player
-    researchAtLocation = globals^.researchLocations.at location
-    researchAtCity = globals^.researchLocations.at city
+    researchAtLocation  = target^.playerLens.location.hasResearchStation
+    [researchAtCity] = target^..spaces.traversed.filtered (\space -> space^.city == destination)
   in
-    if Just True == liftA2 (&&) researchAtCity researchAtLocation then
-      Just $ target & _1.playerLocations.at player ?~ city
+    if researchAtCity && researchAtLocation then
+      Just $ target & playerLens.location .~ city
     else
       Nothing
 
 coBuild :: Target -> City -> Maybe Target
-coBuild target@(globals, playerIx) city =
+coBuild target fromCity =
   let
-    playerLens :: Lens' Globals Player
-    playerLens = lens get setter
-      where
-        get g = g^.players.to (!! playerIx)
-        setter g p = g & players.ix playerIx .~ p
-
-    player = globals^.playerLens
-    Just location = globals^.playerLocations.at player
-    supplyEmpty = globals^.researchStationSupply == 1
+    supplyEmpty = target^._1.researchStationSupply == 1
+    playerLocation = target^.playerLens.location
+    playerLocationCard = PlayerCard playerLocation
   in
-    if PlayerCard location `elem` player^.playerHand then
+    if playerLocationCard `elem` target^.playerLens.playerHand then
       let
         result = target
-          & _1.researchLocations.at location ?~ True
-          & _1.playerLens.playerHand %~ filter (/= PlayerCard location)
+          & _1.spaces.filtered ((== playerLocation) . _city).hasResearchStation .~ True
+          & _1.playerLens.playerHand %~ delete playerLocationCard
       in Just $
         if supplyEmpty then
-          result & _1.researchLocations.at city ?~ False
+          result & _1.spaces.filtered ((== fromCity) . _city).hasResearchStation .~ False
         else
           result
     else
       Nothing
 
 coTreat :: Target -> DiseaseColor -> Maybe Target
-coTreat target@(globals, playerIx) color =
+coTreat target color =
   let
-    player = globals^.players.to (!! playerIx)
-    Just location = globals^.playerLocations.at player
-    Just diseases = globals^.spaces.at location
-    count = diseases^.diseasesOfColor color
+    playerLocation = target^.playerLens.location
+    [diseasesAtLocation] = target^.._1.spaces.filtered ((== playerLocation) . _city).diseases
+    count = diseasesAtLocation^.diseasesOfColor color
   in
     if count > 0 then
-      if Cured == globals^.cures.cureStatus color then
+      if Cured == target^._1.cures.cureStatus color then
         Just $ target
-        & _1.spaces.at location ?%~ diseasesOfColor color .~ 0
+        & _1.spaces.finding ((== playerLocation) . _city) ?%~ diseases.diseasesOfColor color .~ 0
         &~ replicateM_ count (_1.diseaseSupply %= addDisease color)
         & _1.cures.cureStatus color %~
-        if globals^.diseaseSupply.diseasesOfColor color
+        if target^._1.diseaseSupply.diseasesOfColor color
            == diseasesAmount color then
           const Eradicated
         else
           id
       else
         Just $ target
-        & _1.spaces.at location ?%~ removeDisease color
+        & _1.spaces.finding ((== playerLocation) . _city) ?%~ removeDisease color
         & _1.diseaseSupply %~ addDisease color
     else
       Nothing
@@ -183,11 +172,7 @@ coTreat target@(globals, playerIx) color =
 coGiveCard :: Target -> PlayerRef -> PlayerCard -> Maybe Target
 coGiveCard target@(globals, playerIx) ref card =
   let
-    playerLens :: Lens' Globals Player
-    playerLens = lens get setter
-      where
-        get g = g^.players.to (!! playerIx)
-        setter g p = g & players.ix playerIx .~ p
+    playerLens = playerLens playerIx
     refLens :: Lens' Globals Player
     refLens = lens get setter
       where
@@ -214,11 +199,7 @@ coGiveCard target@(globals, playerIx) ref card =
 coTakeCard :: Target -> PlayerCard -> Maybe Target
 coTakeCard target@(globals, playerIx) card =
   let
-    playerLens :: Lens' Globals Player
-    playerLens = lens get setter
-      where
-        get g = g^.players.to (!! playerIx)
-        setter g p = g & players.ix playerIx .~ p
+    playerLens = playerLens playerIx
     Just location = globals^.playerLocations.at (globals^.playerLens)
   in
     case find (\p -> PlayerCard location `elem` p^.playerHand) (globals^.players) of
@@ -237,11 +218,7 @@ coDiscoverCure :: Target -> Lens' Player [City] -> Maybe Target
 coDiscoverCure target@(globals, playerIx) ref =
   let
     cards = globals^.players.to (!! playerIx).ref
-    playerLens :: Lens' Globals Player
-    playerLens = lens get setter
-      where
-        get g = g^.players.to (!! playerIx)
-        setter g p = g & players.ix playerIx .~ p
+    playerLens = playerLens playerIx
   in
     case Data.List.uncons cards of
       Nothing -> Nothing

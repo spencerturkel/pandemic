@@ -1,4 +1,9 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module InfectionRate where
+
+import Data.Aeson
+import GHC.Generics
 
 data InfectionRateCounter
   = RateTwoOne
@@ -8,13 +13,17 @@ data InfectionRateCounter
   | RateThreeTwo
   | RateFourOne
   | RateFourTwo
-  deriving (Show, Read, Enum, Bounded)
+  deriving (Show, Read, Enum, Bounded, Generic)
+
+instance ToJSON InfectionRateCounter
 
 data InfectionRate
   = RateTwo
   | RateThree
   | RateFour
-  deriving (Show, Read, Enum, Bounded)
+  deriving (Show, Read, Enum, Bounded, Generic)
+
+instance ToJSON InfectionRate
 
 getRate :: InfectionRateCounter -> InfectionRate
 getRate RateTwoOne = RateTwo

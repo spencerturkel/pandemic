@@ -33,5 +33,6 @@ executable pandemic
                      , comonad >=4.2 && <4.3
                      , free >=4.12 && <4.13
                      , lens
+                     , aeson
   -- hs-source-dirs:      
   default-language:    Haskell2010

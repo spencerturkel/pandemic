@@ -7,7 +7,6 @@ import           Control.Lens
 import           Control.Monad.Except
 import           Control.Monad.State
 import           Control.Monad.Reader
-import qualified Data.Map.Lazy       as Map
 import           System.Random
 
 import           City
@@ -17,6 +16,7 @@ import           Diseases
 import Globals
 import           Player
 import           PlayerCard
+import           Space
 
 data EpidemicNumber
   = Four
@@ -46,14 +46,8 @@ makeGlobals = do
   p <- asks $ view initPlayers
   epiNum <- asks $ view numEpidemics
   let
-    initial = Globals { _spaces = Map.fromList $
-                        map (flip (,) (Diseases 0 0 0 0)) [minBound..maxBound]
-                      , _researchLocations = Map.fromList $
-                        map ((\(c,b) -> if c == Atlanta then (c, True) else (c,b))
-                        . flip (,) False) [minBound..maxBound]
+    initial = Globals { _spaces = map (\c -> Space c False $ Diseases 0 0 0 0) [minBound..maxBound]
                       , _players = p
-                      , _playerLocations = Map.fromList $
-                        map (flip (,) Atlanta) p
                       , _infectionRateCounter = minBound
                       , _outbreakCounter = minBound
                       , _cures = Cures Uncured Uncured Uncured Uncured

@@ -1,5 +1,6 @@
 module Test where
 
+import City
 import Globals
 import GlobalsConfig
 import Player
@@ -19,7 +20,7 @@ globalsIO :: [Player] -> EpidemicNumber -> IO Globals
 globalsIO = fmap makeGlobals .: globalsConfigIO
 
 testConfig :: IO GlobalsConfig
-testConfig = globalsConfigIO [Player 1 [] Scientist] Four
+testConfig = globalsConfigIO [Player 1 [] Scientist Atlanta] Four
 
 testGlobals :: IO Globals
 testGlobals = makeGlobals <$> testConfig
