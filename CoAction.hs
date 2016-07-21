@@ -5,13 +5,11 @@
 
 module CoAction where
 
-import           Control.Applicative
 import           Control.Comonad.Cofree
 import           Control.Lens
 import           Control.Monad
 import           Cures
 import           Data.List
-import           Data.Maybe
 
 import           City
 import           Diseases
@@ -204,5 +202,4 @@ coDiscoverCure target ref =
       _ -> Nothing
 
 coRoleAbility :: Target -> Ability -> Maybe Target
-coRoleAbility target@(globals, playerLens) ability = -- TODO
-  Nothing
+coRoleAbility _ _ = Nothing -- TODO
