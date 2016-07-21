@@ -44,6 +44,25 @@ data Globals
     deriving (Show, Read, Generic)
 makeLenses ''Globals
 
+spaceAtCity :: City -> Lens' Globals Space
+spaceAtCity theCity = lens getter setter
+  where
+    getter :: Globals -> Space
+    getter Globals { _spaces = xs } =
+      fromMaybe (error "City not found in spaces. This should never happen.") $
+      find (\Space { _city = c } -> c == theCity) xs
+
+    setter :: Globals -> Space -> Globals
+    setter g@Globals { _spaces = [] } s = g & spaces .~ [s]
+    setter g@Globals { _spaces = (x:xs) } s = g &~
+      if x^.city == theCity then
+        spaces .= s:xs
+      else do
+        spaces .= xs
+        modify $ flip setter s
+        spaces %= (x:)
+        
+
 primInfect ::
   (MonadError Loseable m, MonadState Globals m) =>
   City -> DiseaseColor -> (City -> m ()) -> m ()

@@ -8,18 +8,21 @@ import Control.Lens
 
 import Globals
 import Player
+import Space
 
 type PlayerRef = Int
 
 type Target = (Globals, PlayerRef)
-
--- Functor f => (a -> f a) -> s -> f s
--- Target -> Player
--- Target -> Player -> Target
 
 playerLens :: Lens' Target Player
 playerLens = lens getter setter
   where
     getter (g, i) = head (g^..players.ix i)
     setter t@(_, i) p = t & _1.players.ix i .~ p
-    --setter (t, i) p = t & _1.ix i .~ p
+
+playerSpace :: Lens' Target Space
+playerSpace = lens getter setter
+  where
+    getter target = target^._1.spaceAtCity (target^.playerLens.location)
+    setter target space = target
+      & _1.spaceAtCity (target^.playerLens.location) .~ space
