@@ -17,7 +17,7 @@ import Target
 playerCycle :: Globals -> [Int]
 playerCycle globals = cycle $ globals^..players.traversed.playerNumber
 
-doValidAction :: (Interpreter m) => StateT Target m ()
+doValidAction :: (Interpreter m, Monad m) => StateT Target m ()
 doValidAction = do
   target <- get
   action <- lift $ getAction target
@@ -27,13 +27,13 @@ doValidAction = do
     Nothing ->
       doValidAction
 
-showTargetAndDoNextAction :: (Interpreter m) => StateT Target m ()
+showTargetAndDoNextAction :: (Interpreter m, Monad m) => StateT Target m ()
 showTargetAndDoNextAction = do
   target <- get
   lift $ showTarget target
   doValidAction
 
-run :: Interpreter m => Globals -> m Globals
+run :: (Interpreter m, Monad m) => Globals -> m Globals
 run globalState = run' globalState (playerCycle globalState)
   where
     run' globals [] = return globals
@@ -42,15 +42,18 @@ run globalState = run' globalState (playerCycle globalState)
         target :: Target
         target = (globals, playerNum)
 
-        playerLens :: Lens' Globals Player
-        playerLens = lens getter setter
+        player :: Lens' Globals Player
+        player = lens getter setter
           where
             getter g = g^.players.to (!! playerNum)
             setter g p = g & players.ix playerNum .~ p
       in do
       g <- fst <$> runActions target
-      finalState <- runExceptT $ execStateT (drawStage playerLens) g
-      either undefined (flip run' rest) finalState
+      finalState <- runExceptT $ execStateT (drawStage player) g
+      either
+        (error . ("Got Loseable: " ++) . show)
+        (`run'` rest)
+        finalState
 
-runActions :: Interpreter m => Target -> m Target
+runActions :: (Interpreter m, Monad m) => Target -> m Target
 runActions = execStateT $ replicateM 4 showTargetAndDoNextAction

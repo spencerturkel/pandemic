@@ -17,6 +17,7 @@ import Globals
 import Interpreter
 import Player
 import PlayerCard
+import Space
 
 drawStage ::
   (MonadError Loseable m, MonadState Globals m, Interpreter m)
@@ -28,12 +29,14 @@ drawStage ref = do
     <$> replicateM 2 drawFromPlayerDeck
   unless (null epidemics) $ do
     doEpidemic
-    when (length epidemics > 1) $ do
+    when (length epidemics > 1) -- $
       --promptEvent TODO
       doEpidemic
   handSize <- fmap length $ ref.playerHand <<>= newCards
   when (handSize > 7) $ do
-    card <- getCard
+    playerNum <- use $ ref.playerNumber
+    globals <- get
+    card <- getCard (globals, playerNum)
     ref.playerHand %= filter (/= card)
 
 drawFromPlayerDeck :: (MonadError Loseable m, MonadState Globals m) => m PlayerCard
@@ -47,20 +50,19 @@ drawFromPlayerDeck = do
 doEpidemic :: (MonadError Loseable m, MonadState Globals m) => m ()
 doEpidemic = do
   infectionRateCounter %= succ
-  Just (city, deck) <- uncons . reverse <$> use (infectionDeck.getDeck)
-  epidemicInfect city
-  infectionDiscard %= addToDeck city
+  Just (thisCity, deck) <- uncons . reverse <$> use (infectionDeck.getDeck)
+  epidemicInfect thisCity
+  infectionDiscard %= addToDeck thisCity
   modify $ shuffleDeck infectionDiscard
   discarded <- use (infectionDiscard.getDeck)
   infectionDiscard .= Deck []
   infectionDeck .= Deck (discarded ++ reverse deck)
 
 epidemicInfect :: (MonadError Loseable m, MonadState Globals m) => City -> m ()
-epidemicInfect city = do
-  let color = colorOfCity city
-      spaceLens = spaces.at city.non undefined.diseasesOfColor color
-  count <- use spaceLens
+epidemicInfect thisCity = do
+  let color = colorOfCity thisCity
+  count <- use $ spaceAtCity thisCity.diseases.diseasesOfColor color
   if count == 0 then
-    replicateM_ 3 $ infect city color
+    replicateM_ 3 $ infect thisCity color
     else
-    replicateM_ (4 - count) $ infect city color
+    replicateM_ (4 - count) $ infect thisCity color

@@ -1,5 +1,6 @@
 {-# LANGUAGE FlexibleContexts #-}
 {-# LANGUAGE ImpredicativeTypes #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE Rank2Types         #-}
 {-# LANGUAGE TemplateHaskell    #-}
 
@@ -30,7 +31,7 @@ data CoActionF k
               , _treatH         :: DiseaseColor -> Maybe k
               , _giveCardH      :: PlayerRef -> PlayerCard -> Maybe k
               , _takeCardH      :: PlayerCard -> Maybe k
-              , _discoverCureH  :: Lens' Player [City] -> Maybe k
+              , _discoverCureH  :: [City] -> Maybe k
               , _roleAbilityH   :: Ability -> Maybe k
               }
 makeLenses ''CoActionF
@@ -181,10 +182,17 @@ coTakeCard target card =
         when (target^.playerLens.playerHand.to length > handLimit) $
             playerLens.playerHand %= delete card
 
-coDiscoverCure :: Target -> Lens' Player [City] -> Maybe Target
-coDiscoverCure target ref =
+coDiscoverCure :: Target -> [City] -> Maybe Target
+coDiscoverCure target cities =
   let
-    cards = target^.playerLens.ref
+    cards = foldr
+      (\case
+        PlayerCard thisCity ->
+          if thisCity `elem` cities then (thisCity:) else id
+        _ -> id
+      )
+      []
+      (target^.playerLens.playerHand)
   in
     case cards of
       x : xs@[_, _, _, _] ->

@@ -19,5 +19,6 @@ data Action
   | Treat DiseaseColor
   | GiveCard PlayerRef PlayerCard
   | TakeCard PlayerCard
-  | DiscoverCure (Lens' Player [City])
+  | DiscoverCure [City]
   | RoleAbility Ability
+  deriving (Show, Read)

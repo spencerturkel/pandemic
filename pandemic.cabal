@@ -17,7 +17,9 @@ cabal-version:       >=1.10
 
 executable pandemic
   main-is:             Main.hs
-  -- other-modules:       
+  other-modules:       Test
+                     , GameLoop
+                     , RandomIO
   other-extensions:    FlexibleContexts
                      , TemplateHaskell
                      , ImpredicativeTypes

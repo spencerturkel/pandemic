@@ -1,4 +1,33 @@
 
+./dist/build/autogen/Paths_pandemic.hs,966
+module Paths_pandemic Paths_pandemic0,1
+catchIO catchIO11,12
+catchIO catchIO12,13
+version version14,15
+version version15,16
+bindir, libdir, datadir, libexecdir, sysconfdir sysconfdir16,17
+bindir, libdir, datadir, libexecdir,libexecdir16,17
+bindir, libdir, datadir,datadir16,17
+bindir, libdir,libdir16,17
+bindir,bindir16,17
+bindir bindir18,19
+libdir libdir19,20
+datadir datadir20,21
+libexecdir libexecdir21,22
+sysconfdir sysconfdir22,23
+getBinDir, getLibDir, getDataDir, getLibexecDir, getSysconfDir getSysconfDir24,25
+getBinDir, getLibDir, getDataDir, getLibexecDir,getLibexecDir24,25
+getBinDir, getLibDir, getDataDir,getDataDir24,25
+getBinDir, getLibDir,getLibDir24,25
+getBinDir,getBinDir24,25
+getBinDir getBinDir25,26
+getLibDir getLibDir26,27
+getDataDir getDataDir27,28
+getLibexecDir getLibexecDir28,29
+getSysconfDir getSysconfDir29,30
+getDataFileName getDataFileName31,32
+getDataFileName getDataFileName32,33
+
 ./Pairing.hs,212
 class (Functor f, Functor g) => Pairing Pairing14,15
 class (Functor f, Functor g) => Pairing Pairing14,15
@@ -35,16 +64,16 @@ coShuttleFlight coShuttleFlight98,99
 coShuttleFlight coShuttleFlight99,100
 coBuild coBuild109,110
 coBuild coBuild110,111
-coTreat coTreat129,130
-coTreat coTreat130,131
-coGiveCard coGiveCard154,155
-coGiveCard coGiveCard155,156
-coTakeCard coTakeCard174,175
-coTakeCard coTakeCard175,176
-coDiscoverCure coDiscoverCure189,190
-coDiscoverCure coDiscoverCure190,191
-coRoleAbility coRoleAbility209,210
-coRoleAbility coRoleAbility210,211
+coTreat coTreat125,126
+coTreat coTreat126,127
+coGiveCard coGiveCard144,145
+coGiveCard coGiveCard145,146
+coTakeCard coTakeCard169,170
+coTakeCard coTakeCard170,171
+coDiscoverCure coDiscoverCure184,185
+coDiscoverCure coDiscoverCure185,186
+coRoleAbility coRoleAbility211,212
+coRoleAbility coRoleAbility212,213
 
 ./City.hs,1518
 citiesConnected citiesConnected4,5
@@ -153,11 +182,13 @@ data CuresCures15,16
 cureStatus cureStatus24,25
 cureStatus cureStatus25,26
 
-./Target.hs,116
-type PlayerRef PlayerRef11,12
-type Target Target13,14
-playerLens playerLens15,16
+./Target.hs,178
+type PlayerRef PlayerRef12,13
+type Target Target14,15
 playerLens playerLens16,17
+playerLens playerLens17,18
+playerSpace playerSpace22,23
+playerSpace playerSpace23,24
 
 ./.stack-work/dist/x86_64-linux/Cabal-1.22.5.0/build/autogen/Paths_pandemic.hs,966
 module Paths_pandemic Paths_pandemic0,1
@@ -209,20 +240,26 @@ module Main Main0,1
 main main2,3
 main main3,4
 
+./RandomIO.hs,167
+newtype RandomIO RandomIO15,16
+newtype RandomIO a = RandomIO RandomIO15,16
+newtype RandomIO a = RandomIO { runRandomIO runRandomIO15,16
+instance instance18,19
+
 ./DrawStage.hs,308
 module DrawStage DrawStage4,5
-drawStage drawStage20,21
-drawStage drawStage24,25
-drawFromPlayerDeck drawFromPlayerDeck38,39
-drawFromPlayerDeck drawFromPlayerDeck39,40
-doEpidemic doEpidemic46,47
-doEpidemic doEpidemic47,48
-epidemicInfect epidemicInfect57,58
-epidemicInfect epidemicInfect58,59
+drawStage drawStage21,22
+drawStage drawStage25,26
+drawFromPlayerDeck drawFromPlayerDeck41,42
+drawFromPlayerDeck drawFromPlayerDeck42,43
+doEpidemic doEpidemic49,50
+doEpidemic doEpidemic50,51
+epidemicInfect epidemicInfect60,61
+epidemicInfect epidemicInfect61,62
 
-./Interpreter.hs,212
-class Monad m => Interpreter Interpreter12,13
-class Monad m => Interpreter Interpreter12,13
+./Interpreter.hs,190
+class Interpreter Interpreter12,13
+class Interpreter Interpreter12,13
     showTarget showTarget13,14
     getAction getAction14,15
     getCard getCard15,16
@@ -343,8 +380,8 @@ showTargetAndDoNextAction showTargetAndDoNextAction29,30
 showTargetAndDoNextAction showTargetAndDoNextAction30,31
 run run35,36
 run run36,37
-runActions runActions54,55
-runActions runActions55,56
+runActions runActions57,58
+runActions runActions58,59
 
 ./Player.hs,960
 data RoleRole9,10
