@@ -49,7 +49,7 @@ run globalState = run' globalState (playerCycle globalState)
             setter g p = g & players.ix playerNum .~ p
       in do
       g <- fst <$> runActions target
-      finalState <- runExceptT $ execStateT (drawStage player) g
+      finalState <- runExceptT $ execStateT (drawStage player *> doInfectionStep) g
       either
         (error . ("Got Loseable: " ++) . show)
         (`run'` rest)
