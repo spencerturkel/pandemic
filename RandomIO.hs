@@ -19,12 +19,12 @@ newtype RandomIO a = RandomIO { runRandomIO :: IO a }
 instance Interpreter RandomIO where
   showTarget _ = RandomIO $ print "showTarget called"
   getAction (g, p) = RandomIO $ do
-    i <- randomRIO (0, length $ g^.spaces)
+    i <- randomRIO (0, length (g^.spaces) - 1)
     let drive = Drive $ g ^?! spaces.ix i.city
     print $ "getAction for player " <> show p <> " returns " <> show drive
     return drive
   getCard target = RandomIO $ do
-    i <- randomRIO (0, length $ target^.playerLens.playerHand)
+    i <- randomRIO (0, length (target^.playerLens.playerHand) - 1)
     let card =  target ^?! playerLens.playerHand.ix i
-    print $ "getCard for target@" <> show target <> " returns " <> show card
+    print $ "getCard returns " <> show card
     return card

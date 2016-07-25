@@ -20,7 +20,7 @@ globalsIO :: [Player] -> EpidemicNumber -> IO Globals
 globalsIO = fmap makeGlobals .: globalsConfigIO
 
 testConfig :: IO GlobalsConfig
-testConfig = globalsConfigIO [Player 1 [] Scientist Atlanta] Four
+testConfig = globalsConfigIO [Player 0 [] Scientist Atlanta] Four
 
 testGlobals :: IO Globals
 testGlobals = makeGlobals <$> testConfig
