@@ -1,9 +1,11 @@
 module Test where
 
 import City
+import GameLoop
 import Globals
 import GlobalsConfig
 import Player
+import RandomIO 
 
 import System.Random
 
@@ -24,3 +26,6 @@ testConfig = globalsConfigIO [Player 0 [] Scientist Atlanta] Four
 
 testGlobals :: IO Globals
 testGlobals = makeGlobals <$> testConfig
+
+runRandomTest :: IO ()
+runRandomTest = print =<< runRandomIO . run =<< testGlobals
