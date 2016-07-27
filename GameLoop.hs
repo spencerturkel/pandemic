@@ -6,6 +6,7 @@ import Control.Lens
 import Control.Monad
 import Control.Monad.Except
 import Control.Monad.State
+import Control.Monad.Writer.Strict
 
 import DrawStage
 import Globals
@@ -49,7 +50,9 @@ run globalState = run' globalState (playerCycle globalState)
             setter g p = g & players.ix playerNum .~ p
       in do
       g <- fst <$> runActions target
-      finalState <- runExceptT $ execStateT (drawStage player *> doInfectionStep) g
+      (finalState, notifications) <-
+        runWriterT . runExceptT $ execStateT (drawStage player *> doInfectionStep) g
+      notify notifications
       either
         (error . ("Got Loseable: " ++) . show)
         (`run'` rest)

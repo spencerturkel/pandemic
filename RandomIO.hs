@@ -3,6 +3,7 @@
 module RandomIO where
 
 import Control.Lens
+import Data.Foldable
 import Data.Monoid
 import System.Random
 
@@ -28,3 +29,5 @@ instance Interpreter RandomIO where
     let card =  target ^?! playerLens.playerHand.ix i
     print $ "getCard returns " <> show card
     return card
+  notify xs = RandomIO . for_ xs $ \x ->
+    putStrLn $ "Got notification: " <> show x

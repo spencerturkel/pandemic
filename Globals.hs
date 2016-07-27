@@ -8,6 +8,7 @@ module Globals where
 import           Control.Lens
 import           Control.Monad.Except
 import           Control.Monad.State
+import           Control.Monad.Writer.Strict
 --import           Data.Aeson hiding ((.=))
 import           Data.List
 import           Data.Maybe
@@ -21,6 +22,7 @@ import           Diseases
 import Exception
 import           EventEffect
 import           InfectionRate
+import           Notification
 import           OutbreakCounter
 import           Player
 import           PlayerCard
@@ -61,7 +63,6 @@ spaceAtCity theCity = lens getter setter
         spaces .= xs
         modify $ flip setter s
         spaces %= (x:)
-        
 
 primInfect ::
   (MonadError Loseable m, MonadState Globals m) =>
@@ -85,9 +86,10 @@ infect ::
   City -> DiseaseColor -> m ()
 infect city color = primInfect city color doOutbreak
 
-doInfectionStep :: (MonadError Loseable m, MonadState Globals m) => m ()
+doInfectionStep :: (MonadError Loseable m, MonadState Globals m, NotificationWriter m) => m ()
 doInfectionStep = do
   count <- fromEnum <$> use infectionRateCounter
+  tell [N1]
   replicateM_ count doNextInfection
 
 doNextInfection :: (MonadError Loseable m, MonadState Globals m) => m ()

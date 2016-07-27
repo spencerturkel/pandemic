@@ -4,9 +4,10 @@
 
 module Interpreter where
 
-import Control.Monad.State
+import Control.Monad.Writer.Strict
 
 import Action
+import Notification
 import PlayerCard
 import Target
 
@@ -14,13 +15,10 @@ class Interpreter m where
     showTarget :: Target -> m ()
     getAction :: Target -> m Action
     getCard :: Target -> m PlayerCard
+    notify :: [Notification] -> m ()
 
 instance (MonadTrans t, Monad m, Interpreter m) => Interpreter (t m) where
   showTarget = lift . showTarget
   getAction = lift . getAction
   getCard = lift . getCard
-
-instance Interpreter IO where
-  showTarget = error "instance Interpreter IO not implemented"
-  getAction = error "instance Interpreter IO not implemented"
-  getCard = error "instance Interpreter IO not implemented"
+  notify = lift . notify

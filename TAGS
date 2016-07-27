@@ -57,23 +57,23 @@ connectionsFromCity connectionsFromCity111,112
 connectionsFromCity connectionsFromCity112,113
 
 ./RandomIO.hs,167
-newtype RandomIO RandomIO15,16
-newtype RandomIO a = RandomIO RandomIO15,16
-newtype RandomIO a = RandomIO { runRandomIO runRandomIO15,16
-instance instance18,19
+newtype RandomIO RandomIO16,17
+newtype RandomIO a = RandomIO RandomIO16,17
+newtype RandomIO a = RandomIO { runRandomIO runRandomIO16,17
+instance instance19,20
 
 ./GameLoop.hs,368
 module GameLoop GameLoop2,3
-playerCycle playerCycle16,17
 playerCycle playerCycle17,18
-doValidAction doValidAction19,20
+playerCycle playerCycle18,19
 doValidAction doValidAction20,21
-showTargetAndDoNextAction showTargetAndDoNextAction29,30
+doValidAction doValidAction21,22
 showTargetAndDoNextAction showTargetAndDoNextAction30,31
-run run35,36
+showTargetAndDoNextAction showTargetAndDoNextAction31,32
 run run36,37
-runActions runActions57,58
-runActions runActions58,59
+run run37,38
+runActions runActions60,61
+runActions runActions61,62
 
 ./Player.hs,960
 data RoleRole9,10
@@ -103,6 +103,12 @@ handLimit handLimit37,38
 module Main Main0,1
 main main4,5
 main main5,6
+
+./Notification.hs,113
+data NotificationNotification6,7
+  = N1N17,8
+  | N2N28,9
+type NotificationWriter NotificationWriter11,12
 
 ./Exception.hs,367
 data ExceptionException4,5
@@ -167,40 +173,40 @@ getRate getRate27,28
 getRate getRate28,29
 
 ./Globals.hs,1274
---import --import10,11
-data GlobalsGlobals28,29
-  = Globals Globals29,30
-  = Globals { _spaces _spaces29,30
-            , _players _players30,31
-            , _infectionRateCounter _infectionRateCounter31,32
-            , _outbreakCounter _outbreakCounter32,33
-            , _cures _cures33,34
-            , _diseaseSupply _diseaseSupply34,35
-            , _researchStationSupply _researchStationSupply35,36
-            , _infectionDeck _infectionDeck36,37
-            , _infectionDiscard _infectionDiscard37,38
-            , _playerDeck _playerDeck38,39
-            , _playerDiscard _playerDiscard39,40
-            , _generator _generator40,41
-            , _eventEffects _eventEffects41,42
-spaceAtCity spaceAtCity46,47
-spaceAtCity spaceAtCity47,48
-primInfect primInfect65,66
-primInfect primInfect68,69
-infect infect82,83
-infect infect85,86
-doInfectionStep doInfectionStep87,88
+--import --import11,12
+data GlobalsGlobals30,31
+  = Globals Globals31,32
+  = Globals { _spaces _spaces31,32
+            , _players _players32,33
+            , _infectionRateCounter _infectionRateCounter33,34
+            , _outbreakCounter _outbreakCounter34,35
+            , _cures _cures35,36
+            , _diseaseSupply _diseaseSupply36,37
+            , _researchStationSupply _researchStationSupply37,38
+            , _infectionDeck _infectionDeck38,39
+            , _infectionDiscard _infectionDiscard39,40
+            , _playerDeck _playerDeck40,41
+            , _playerDiscard _playerDiscard41,42
+            , _generator _generator42,43
+            , _eventEffects _eventEffects43,44
+spaceAtCity spaceAtCity48,49
+spaceAtCity spaceAtCity49,50
+primInfect primInfect66,67
+primInfect primInfect69,70
+infect infect83,84
+infect infect86,87
 doInfectionStep doInfectionStep88,89
-doNextInfection doNextInfection92,93
-doNextInfection doNextInfection93,94
-shuffleDeck shuffleDeck100,101
-shuffleDeck shuffleDeck101,102
-drawFrom drawFrom107,108
-drawFrom drawFrom110,111
-doEvent doEvent116,117
-doEvent doEvent117,118
-doOutbreak doOutbreak119,120
-doOutbreak doOutbreak120,121
+doInfectionStep doInfectionStep89,90
+doNextInfection doNextInfection94,95
+doNextInfection doNextInfection95,96
+shuffleDeck shuffleDeck102,103
+shuffleDeck shuffleDeck103,104
+drawFrom drawFrom109,110
+drawFrom drawFrom112,113
+doEvent doEvent118,119
+doEvent doEvent119,120
+doOutbreak doOutbreak121,122
+doOutbreak doOutbreak122,123
 
 ./DrawStage.hs,308
 module DrawStage DrawStage4,5
@@ -259,13 +265,14 @@ removeDisease removeDisease39,40
 availableDiseases availableDiseases44,45
 availableDiseases availableDiseases45,46
 
-./Interpreter.hs,190
-class Interpreter Interpreter12,13
-class Interpreter Interpreter12,13
-    showTarget showTarget13,14
-    getAction getAction14,15
-    getCard getCard15,16
-instance instance17,18
+./Interpreter.hs,215
+class Interpreter Interpreter13,14
+class Interpreter Interpreter13,14
+    showTarget showTarget14,15
+    getAction getAction15,16
+    getCard getCard16,17
+    notify notify17,18
+instance instance19,20
 
 ./PlayerCard.hs,175
 data PlayerCardPlayerCard5,6
