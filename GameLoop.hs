@@ -17,20 +17,20 @@ import Target
 playerCycle :: Globals -> [Int]
 playerCycle globals = cycle $ globals^..players.traversed.playerNumber
 
-doValidAction :: (Interpreter m, Monad m) => StateT Target m ()
+doValidAction :: (Interpreter m, MonadState Target m) => m ()
 doValidAction = do
   target <- get
-  action <- lift $ getAction target
+  action <- getAction target
   case runAction target action of
     Just newTarget ->
       put newTarget
     Nothing ->
       doValidAction
 
-showTargetAndDoNextAction :: (Interpreter m, Monad m) => StateT Target m ()
+showTargetAndDoNextAction :: (Interpreter m, MonadState Target m) => m ()
 showTargetAndDoNextAction = do
   target <- get
-  lift $ showTarget target
+  showTarget target
   doValidAction
 
 run :: (Interpreter m, Monad m) => Globals -> m Globals
