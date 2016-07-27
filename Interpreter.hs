@@ -19,8 +19,3 @@ instance (MonadTrans t, Monad (t m), Interpreter m) => Interpreter (t m) where
   showTarget = lift . showTarget
   getAction = lift . getAction
   getCard = lift . getCard
-
-instance Interpreter IO where
-  showTarget = error "instance Interpreter IO not implemented"
-  getAction = error "instance Interpreter IO not implemented"
-  getCard = error "instance Interpreter IO not implemented"
