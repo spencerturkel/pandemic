@@ -10,12 +10,12 @@ import Action
 import PlayerCard
 import Target
 
-class Interpreter m where
+class Monad m => Interpreter m where
     showTarget :: Target -> m ()
     getAction :: Target -> m Action
     getCard :: Target -> m PlayerCard
 
-instance (MonadTrans t, Monad m, Interpreter m) => Interpreter (t m) where
+instance (MonadTrans t, Monad (t m), Interpreter m) => Interpreter (t m) where
   showTarget = lift . showTarget
   getAction = lift . getAction
   getCard = lift . getCard
