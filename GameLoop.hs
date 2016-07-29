@@ -33,7 +33,7 @@ showTargetAndDoNextAction = do
   showTarget target
   doValidAction
 
-run :: (Interpreter m, Monad m) => Globals -> m Globals
+run :: Interpreter m => Globals -> m Globals
 run globalState = run' globalState (playerCycle globalState)
   where
     run' globals [] = return globals
@@ -58,5 +58,5 @@ run globalState = run' globalState (playerCycle globalState)
         (`run'` rest)
         finalState
 
-runActions :: (Interpreter m, Monad m) => Target -> m Target
+runActions :: Interpreter m => Target -> m Target
 runActions = execStateT $ replicateM 4 showTargetAndDoNextAction
