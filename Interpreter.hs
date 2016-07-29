@@ -18,7 +18,7 @@ class Monad m => Interpreter m where
     getCard :: Target -> m PlayerCard
     notify :: [Notification] -> m ()
 
-runNotifications :: (Monad m, Interpreter m) => WriterT [Notification] m a -> m a
+runNotifications :: Interpreter m => WriterT [Notification] m a -> m a
 runNotifications (WriterT mx) = do
   (x, ns) <- mx
   notify ns
