@@ -203,12 +203,12 @@ doInfectionStep doInfectionStep89,90
 doInfectionStep doInfectionStep90,91
 doNextInfection doNextInfection94,95
 doNextInfection doNextInfection95,96
-shuffleDeck shuffleDeck101,102
 shuffleDeck shuffleDeck102,103
-drawFrom drawFrom108,109
-drawFrom drawFrom111,112
-doOutbreak doOutbreak117,118
-doOutbreak doOutbreak119,120
+shuffleDeck shuffleDeck103,104
+drawFrom drawFrom109,110
+drawFrom drawFrom112,113
+doOutbreak doOutbreak118,119
+doOutbreak doOutbreak120,121
 
 ./DrawStage.hs,308
 module DrawStage DrawStage4,5

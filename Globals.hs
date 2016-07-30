@@ -98,6 +98,7 @@ doNextInfection = do
     runExceptT (drawFrom infectionDeck
                 :: MonadState Globals m => ExceptT DeckException m City)
   infect cityToInfect $ colorOfCity cityToInfect
+  infectionDiscard %= addToDeck cityToInfect
 
 shuffleDeck :: Lens' Globals (Deck a) -> Globals -> Globals
 shuffleDeck deck global =
