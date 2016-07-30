@@ -28,3 +28,4 @@ instance Interpreter RandomIO where
     print $ "getCard returns " <> show card
     return card
   notifyAll = RandomIO . mapM_ print
+  endGame = (return .) . (,)

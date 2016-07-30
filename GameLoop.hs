@@ -8,6 +8,7 @@ import Control.Monad.Except
 import Control.Monad.State
 
 import DrawStage
+import Exception
 import Globals
 import Interpreter
 import Player
@@ -33,11 +34,11 @@ showTargetAndDoNextAction = do
   showTarget target
   doValidAction
 
-run :: Interpreter m => Globals -> m Globals
+run :: Interpreter m => Globals -> m (Target, Loseable)
 run globalState = run' globalState (playerCycle globalState)
   where
-    run' globals [] = return globals
-    run' globals (playerNum:rest) =
+    run' _ [] = undefined -- not possible
+    run' globals (playerNum:tailPlayerNums) =
       let
         target :: Target
         target = (globals, playerNum)
@@ -54,8 +55,8 @@ run globalState = run' globalState (playerCycle globalState)
         runExceptT $
         execStateT (drawStage player *> doInfectionStep) g
       either
-        (error . ("Got Loseable: " ++) . show)
-        (`run'` rest)
+        (endGame (g, playerNum))
+        (flip run' tailPlayerNums)
         finalState
 
 runActions :: Interpreter m => Target -> m Target

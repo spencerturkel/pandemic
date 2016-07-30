@@ -8,6 +8,7 @@ module Interpreter where
 import Control.Monad.Writer.Strict
 
 import Action
+import Exception
 import Notification
 import PlayerCard
 import Target
@@ -17,6 +18,7 @@ class Monad m => Interpreter m where
     getAction :: Target -> m Action
     getCard :: Target -> m PlayerCard
     notifyAll :: [Notification] -> m ()
+    endGame :: Target -> Loseable -> m (Target, Loseable)
 
 runNotifications :: Interpreter m => WriterT [Notification] m a -> m a
 runNotifications (WriterT mx) = do
@@ -29,3 +31,4 @@ instance (MonadTrans t, Monad (t m), Interpreter m) => Interpreter (t m) where
   getAction = lift . getAction
   getCard = lift . getCard
   notifyAll = lift . notifyAll
+  endGame = (lift .) . endGame

@@ -64,16 +64,16 @@ instance instance19,20
 
 ./GameLoop.hs,368
 module GameLoop GameLoop2,3
-playerCycle playerCycle16,17
 playerCycle playerCycle17,18
-doValidAction doValidAction19,20
+playerCycle playerCycle18,19
 doValidAction doValidAction20,21
-showTargetAndDoNextAction showTargetAndDoNextAction29,30
+doValidAction doValidAction21,22
 showTargetAndDoNextAction showTargetAndDoNextAction30,31
-run run35,36
+showTargetAndDoNextAction showTargetAndDoNextAction31,32
 run run36,37
-runActions runActions60,61
+run run37,38
 runActions runActions61,62
+runActions runActions62,63
 
 ./Player.hs,960
 data RoleRole9,10
@@ -221,20 +221,22 @@ doEpidemic doEpidemic48,49
 epidemicInfect epidemicInfect59,60
 epidemicInfect epidemicInfect60,61
 
-./Test.hs,369
+./Test.hs,439
 module Test Test0,1
-(.:).:11,12
-(f(12,13
-globalsConfigIO globalsConfigIO15,16
-globalsConfigIO globalsConfigIO16,17
-globalsIO globalsIO20,21
-globalsIO globalsIO21,22
-testConfig testConfig23,24
-testConfig testConfig24,25
-testGlobals testGlobals26,27
-testGlobals testGlobals27,28
-runRandomTest runRandomTest29,30
-runRandomTest runRandomTest30,31
+(.:).:13,14
+(f(14,15
+globalsConfigIO globalsConfigIO17,18
+globalsConfigIO globalsConfigIO18,19
+globalsIO globalsIO22,23
+globalsIO globalsIO23,24
+testConfig testConfig25,26
+testConfig testConfig26,27
+testGlobals testGlobals28,29
+testGlobals testGlobals29,30
+getRandomTest getRandomTest31,32
+getRandomTest getRandomTest32,33
+runRandomTest runRandomTest34,35
+runRandomTest runRandomTest35,36
 
 ./Pairing.hs,212
 class (Functor f, Functor g) => Pairing Pairing14,15
@@ -267,16 +269,17 @@ removeDisease removeDisease39,40
 availableDiseases availableDiseases44,45
 availableDiseases availableDiseases45,46
 
-./Interpreter.hs,325
-class Monad m => Interpreter Interpreter14,15
-class Monad m => Interpreter Interpreter14,15
-    showTarget showTarget15,16
-    getAction getAction16,17
-    getCard getCard17,18
-    notifyAll notifyAll18,19
-runNotifications runNotifications20,21
-runNotifications runNotifications21,22
-instance instance26,27
+./Interpreter.hs,352
+class Monad m => Interpreter Interpreter15,16
+class Monad m => Interpreter Interpreter15,16
+    showTarget showTarget16,17
+    getAction getAction17,18
+    getCard getCard18,19
+    notifyAll notifyAll19,20
+    endGame endGame20,21
+runNotifications runNotifications22,23
+runNotifications runNotifications23,24
+instance instance28,29
 
 ./PlayerCard.hs,175
 data PlayerCardPlayerCard5,6
