@@ -7,6 +7,7 @@ import           Control.Lens
 import           Control.Monad.Except
 import           Control.Monad.State
 import           Control.Monad.Reader
+import           Control.Monad.Writer.Strict
 import           System.Random
 
 import           City
@@ -84,6 +85,8 @@ doInitialInfections = runReaderT go 3
         replicateM_ n
           . fmap (either undefined id)
           . runExceptT
+          . fmap fst
+          . runWriterT
           . infect city
           $ colorOfCity city
         local (\x -> x - 1) go

@@ -16,16 +16,16 @@ class Monad m => Interpreter m where
     showTarget :: Target -> m ()
     getAction :: Target -> m Action
     getCard :: Target -> m PlayerCard
-    notify :: [Notification] -> m ()
+    notifyAll :: [Notification] -> m ()
 
 runNotifications :: Interpreter m => WriterT [Notification] m a -> m a
 runNotifications (WriterT mx) = do
   (x, ns) <- mx
-  notify ns
+  notifyAll ns
   return x
 
 instance (MonadTrans t, Monad (t m), Interpreter m) => Interpreter (t m) where
   showTarget = lift . showTarget
   getAction = lift . getAction
   getCard = lift . getCard
-  notify = lift . notify
+  notifyAll = lift . notifyAll

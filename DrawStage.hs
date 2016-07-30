@@ -15,29 +15,27 @@ import Diseases
 import Exception
 import Globals
 import Interpreter
+import Notification
 import Player
 import PlayerCard
 import Space
 
 drawStage ::
-  (MonadError Loseable m, MonadState Globals m, Interpreter m)
+  (MonadError Loseable m, MonadState Globals m, Interpreter m, NotificationWriter m)
   => Lens' Globals Player
   -> m ()
 drawStage ref = do
   (epidemics, newCards) <-
     partition (== Epidemic)
     <$> replicateM 2 drawFromPlayerDeck
-  unless (null epidemics) $ do
-    doEpidemic
-    when (length epidemics > 1) -- $
-      --promptEvent TODO
-      doEpidemic
+  mapM_ (const doEpidemic) epidemics
+  mapM_ (notify . Drew) newCards
   handSize <- fmap length $ ref.playerHand <<>= newCards
   when (handSize > 7) $ do
     playerNum <- use $ ref.playerNumber
     globals <- get
     card <- getCard (globals, playerNum)
-    ref.playerHand %= filter (/= card)
+    ref.playerHand %= delete card
 
 drawFromPlayerDeck :: (MonadError Loseable m, MonadState Globals m) => m PlayerCard
 drawFromPlayerDeck = do
@@ -47,10 +45,11 @@ drawFromPlayerDeck = do
                    => m PlayerCard)
   either (const $ throwError PlayerDeckExhausted) return card
 
-doEpidemic :: (MonadError Loseable m, MonadState Globals m) => m ()
+doEpidemic :: (MonadError Loseable m, MonadState Globals m, NotificationWriter m) => m ()
 doEpidemic = do
   infectionRateCounter %= succ
   Just (thisCity, deck) <- uncons . reverse <$> use (infectionDeck.getDeck)
+  notify $ EpidemicIn thisCity
   epidemicInfect thisCity
   infectionDiscard %= addToDeck thisCity
   modify $ shuffleDeck infectionDiscard
@@ -58,7 +57,7 @@ doEpidemic = do
   infectionDiscard .= Deck []
   infectionDeck .= Deck (discarded ++ reverse deck)
 
-epidemicInfect :: (MonadError Loseable m, MonadState Globals m) => City -> m ()
+epidemicInfect :: (MonadError Loseable m, MonadState Globals m, NotificationWriter m) => City -> m ()
 epidemicInfect thisCity = do
   let color = colorOfCity thisCity
   count <- use $ spaceAtCity thisCity.diseases.diseasesOfColor color

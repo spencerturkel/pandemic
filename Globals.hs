@@ -65,9 +65,10 @@ spaceAtCity theCity = lens getter setter
         spaces %= (x:)
 
 primInfect ::
-  (MonadError Loseable m, MonadState Globals m) =>
+  (MonadError Loseable m, MonadState Globals m, NotificationWriter m) =>
   City -> DiseaseColor -> (City -> m ()) -> m ()
 primInfect city color f = do
+  notify $ Infecting city
   status <- use $ cures.cureStatus color
   ([space], otherSpaces) <- use $ spaces.to (partition ((city ==) . _city))
   let diseaseCount = space^.diseases.diseasesOfColor color
@@ -82,23 +83,21 @@ primInfect city color f = do
         throwError $ DiseaseExhausted color
 
 infect ::
-  (MonadError Loseable m, MonadState Globals m) =>
+  (MonadError Loseable m, MonadState Globals m, NotificationWriter m) =>
   City -> DiseaseColor -> m ()
-infect city color = primInfect city color doOutbreak
+infect cityToInfect color = primInfect cityToInfect color doOutbreak
 
 doInfectionStep :: (MonadError Loseable m, MonadState Globals m, NotificationWriter m) => m ()
 doInfectionStep = do
   count <- fromEnum <$> use infectionRateCounter
-  tell [N1]
   replicateM_ count doNextInfection
 
-doNextInfection :: (MonadError Loseable m, MonadState Globals m) => m ()
+doNextInfection :: (MonadError Loseable m, MonadState Globals m, NotificationWriter m) => m ()
 doNextInfection = do
-  Right city <-
+  Right cityToInfect <-
     runExceptT (drawFrom infectionDeck
                 :: MonadState Globals m => ExceptT DeckException m City)
-  infect city $ colorOfCity city
-  -- TODO prompt for event
+  infect cityToInfect $ colorOfCity cityToInfect
 
 shuffleDeck :: Lens' Globals (Deck a) -> Globals -> Globals
 shuffleDeck deck global =
@@ -116,20 +115,20 @@ drawFrom target = do
     target .= deck'
     return card
 
-doEvent :: EventEffect -> Globals -> Globals
-doEvent = undefined -- TODO
-
-doOutbreak :: (MonadError Loseable m, MonadState Globals m) => City -> m ()
-doOutbreak c = go [c] c
-  where
-    go cities city = do
-      count <- outbreakCounter <%= succ
-      when (count == maxBound) $ throwError EigthOutbreak
-      (\f ->foldM_ f cities $ connectionsFromCity city)
-        $ \visited location ->
-        if location `elem` visited then
-          return visited
-        else do
-          let visited' = location:visited
-          primInfect location (colorOfCity city) (go visited')
-          return visited'
+doOutbreak :: (MonadError Loseable m, MonadState Globals m, NotificationWriter m)
+  => City -> m ()
+doOutbreak c = do
+  notify $ OutbreakIn c
+  go [c] c
+    where
+      go cities city = do
+        count <- outbreakCounter <%= succ
+        when (count == maxBound) $ throwError EigthOutbreak
+        (\f ->foldM_ f cities $ connectionsFromCity city)
+          $ \visited location ->
+          if location `elem` visited then
+            return visited
+          else do
+            let visited' = location:visited
+            primInfect location (colorOfCity city) (go visited')
+            return visited'

@@ -22,7 +22,7 @@ doValidAction = do
   target <- get
   action <- getAction target
   case runAction target action of
-    Just newTarget ->
+    Just newTarget -> do
       put newTarget
     Nothing ->
       doValidAction

@@ -104,11 +104,15 @@ module Main Main0,1
 main main4,5
 main main5,6
 
-./Notification.hs,113
-data NotificationNotification6,7
-  = N1N17,8
-  | N2N28,9
-type NotificationWriter NotificationWriter11,12
+./Notification.hs,247
+data NotificationNotification10,11
+  = Infecting Infecting11,12
+  | OutbreakIn OutbreakIn12,13
+  | EpidemicIn EpidemicIn13,14
+  | Drew Drew14,15
+type NotificationWriter NotificationWriter17,18
+notify notify19,20
+notify notify20,21
 
 ./Exception.hs,367
 data ExceptionException4,5
@@ -172,7 +176,7 @@ data InfectionRateInfectionRate19,20
 getRate getRate27,28
 getRate getRate28,29
 
-./Globals.hs,1274
+./Globals.hs,1224
 --import --import11,12
 data GlobalsGlobals30,31
   = Globals Globals31,32
@@ -193,31 +197,29 @@ spaceAtCity spaceAtCity48,49
 spaceAtCity spaceAtCity49,50
 primInfect primInfect66,67
 primInfect primInfect69,70
-infect infect83,84
-infect infect86,87
-doInfectionStep doInfectionStep88,89
+infect infect84,85
+infect infect87,88
 doInfectionStep doInfectionStep89,90
+doInfectionStep doInfectionStep90,91
 doNextInfection doNextInfection94,95
 doNextInfection doNextInfection95,96
+shuffleDeck shuffleDeck101,102
 shuffleDeck shuffleDeck102,103
-shuffleDeck shuffleDeck103,104
-drawFrom drawFrom109,110
-drawFrom drawFrom112,113
-doEvent doEvent118,119
-doEvent doEvent119,120
-doOutbreak doOutbreak121,122
-doOutbreak doOutbreak122,123
+drawFrom drawFrom108,109
+drawFrom drawFrom111,112
+doOutbreak doOutbreak117,118
+doOutbreak doOutbreak119,120
 
 ./DrawStage.hs,308
 module DrawStage DrawStage4,5
-drawStage drawStage21,22
-drawStage drawStage25,26
-drawFromPlayerDeck drawFromPlayerDeck41,42
-drawFromPlayerDeck drawFromPlayerDeck42,43
-doEpidemic doEpidemic49,50
-doEpidemic doEpidemic50,51
+drawStage drawStage22,23
+drawStage drawStage26,27
+drawFromPlayerDeck drawFromPlayerDeck39,40
+drawFromPlayerDeck drawFromPlayerDeck40,41
+doEpidemic doEpidemic47,48
+doEpidemic doEpidemic48,49
+epidemicInfect epidemicInfect59,60
 epidemicInfect epidemicInfect60,61
-epidemicInfect epidemicInfect61,62
 
 ./Test.hs,369
 module Test Test0,1
@@ -265,13 +267,13 @@ removeDisease removeDisease39,40
 availableDiseases availableDiseases44,45
 availableDiseases availableDiseases45,46
 
-./Interpreter.hs,319
+./Interpreter.hs,325
 class Monad m => Interpreter Interpreter14,15
 class Monad m => Interpreter Interpreter14,15
     showTarget showTarget15,16
     getAction getAction16,17
     getCard getCard17,18
-    notify notify18,19
+    notifyAll notifyAll18,19
 runNotifications runNotifications20,21
 runNotifications runNotifications21,22
 instance instance26,27
@@ -285,23 +287,23 @@ isPlayerCard isPlayerCard11,12
 isPlayerCard isPlayerCard12,13
 
 ./GlobalsConfig.hs,654
-data EpidemicNumberEpidemicNumber20,21
-  = FourFour21,22
-  | FiveFive22,23
-  | SixSix23,24
-fromEpidemicNumber fromEpidemicNumber26,27
+data EpidemicNumberEpidemicNumber21,22
+  = FourFour22,23
+  | FiveFive23,24
+  | SixSix24,25
 fromEpidemicNumber fromEpidemicNumber27,28
-data GlobalsConfigGlobalsConfig34,35
-  = GlobalsConfig GlobalsConfig35,36
-  = GlobalsConfig { _initGen _initGen35,36
-                  , _initPlayers _initPlayers36,37
-                  , _numEpidemics _numEpidemics37,38
-makeGlobals makeGlobals42,43
+fromEpidemicNumber fromEpidemicNumber28,29
+data GlobalsConfigGlobalsConfig35,36
+  = GlobalsConfig GlobalsConfig36,37
+  = GlobalsConfig { _initGen _initGen36,37
+                  , _initPlayers _initPlayers37,38
+                  , _numEpidemics _numEpidemics38,39
 makeGlobals makeGlobals43,44
-doInitialInfections doInitialInfections75,76
+makeGlobals makeGlobals44,45
 doInitialInfections doInitialInfections76,77
-insertEpidemics insertEpidemics90,91
-insertEpidemics insertEpidemics91,92
+doInitialInfections doInitialInfections77,78
+insertEpidemics insertEpidemics93,94
+insertEpidemics insertEpidemics94,95
 
 ./RunAction.hs,82
 module RunAction RunAction0,1
