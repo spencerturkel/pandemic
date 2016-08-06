@@ -8,8 +8,6 @@ module Globals where
 import           Control.Lens
 import           Control.Monad.Except
 import           Control.Monad.State
-import           Control.Monad.Writer.Strict
---import           Data.Aeson hiding ((.=))
 import           Data.List
 import           Data.Maybe
 import GHC.Generics(Generic)
@@ -20,7 +18,6 @@ import           Cures
 import           Deck
 import           Diseases
 import Exception
-import           EventEffect
 import           InfectionRate
 import           Notification
 import           OutbreakCounter
@@ -41,7 +38,6 @@ data Globals
             , _playerDeck            :: Deck PlayerCard
             , _playerDiscard         :: Deck PlayerCard
             , _generator             :: StdGen
-            , _eventEffects          :: [EventEffect]
             }
     deriving (Show, Read, Generic)
 makeLenses ''Globals
@@ -67,14 +63,14 @@ spaceAtCity theCity = lens getter setter
 primInfect ::
   (MonadError Loseable m, MonadState Globals m, NotificationWriter m) =>
   City -> DiseaseColor -> (City -> m ()) -> m ()
-primInfect city color f = do
-  notify $ Infecting city
+primInfect thisCity color f = do
+  notify $ Infecting thisCity
   status <- use $ cures.cureStatus color
-  ([space], otherSpaces) <- use $ spaces.to (partition ((city ==) . _city))
+  ([space], otherSpaces) <- use $ spaces.to (partition ((thisCity ==) . _city))
   let diseaseCount = space^.diseases.diseasesOfColor color
   unless (status == Eradicated) $
     if diseaseCount == 3 then
-      f city
+      f thisCity
       else do
       spaces .= (space & diseases %~ addDisease color) : otherSpaces
       diseaseSupply %= removeDisease color
@@ -122,14 +118,14 @@ doOutbreak c = do
   notify $ OutbreakIn c
   go [c] c
     where
-      go cities city = do
+      go cities thisCity = do
         count <- outbreakCounter <%= succ
         when (count == maxBound) $ throwError EigthOutbreak
-        (\f ->foldM_ f cities $ connectionsFromCity city)
-          $ \visited location ->
-          if location `elem` visited then
+        (\f ->foldM_ f cities $ connectionsFromCity thisCity)
+          $ \visited thisLocation ->
+          if thisLocation `elem` visited then
             return visited
           else do
-            let visited' = location:visited
-            primInfect location (colorOfCity city) (go visited')
+            let visited' = thisLocation:visited
+            primInfect thisLocation (colorOfCity thisCity) (go visited')
             return visited'

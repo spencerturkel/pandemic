@@ -1,4 +1,9 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module City where
+
+import           Data.Aeson
+import           GHC.Generics
 
 import           Diseases
 
@@ -55,7 +60,10 @@ data City
   | Taipei
   | Manila
   | Sydney
-  deriving (Show, Read, Eq, Ord, Enum, Bounded)
+  deriving (Show, Read, Eq, Ord, Enum, Bounded, Generic)
+
+instance FromJSON City
+instance ToJSON City
 
 colorOfCity :: City -> DiseaseColor
 colorOfCity   SanFrancisco = Blue

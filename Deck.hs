@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE FlexibleContexts #-}
 
@@ -6,20 +7,28 @@ module Deck where
 import Control.Lens
 import Control.Monad.Except
 import Control.Monad.State
+import Data.Aeson
 import Data.Function
 import Data.List
 import qualified Data.Map as Map
+import GHC.Generics
 import System.Random
 
 data DeckException
   = DrawFromEmptyDeck
-  deriving (Show, Read)
+  deriving (Show, Read, Generic)
+
+instance ToJSON DeckException
+instance FromJSON DeckException
 
 newtype Deck a
   = Deck { _getDeck :: [a]
          }
-  deriving (Show, Read)
+  deriving (Show, Read, Generic)
 makeLenses ''Deck
+
+instance ToJSON a => ToJSON (Deck a)
+instance FromJSON a => FromJSON (Deck a)
 
 addToDeck :: a -> Deck a -> Deck a
 addToDeck a (Deck as) = Deck $ a:as

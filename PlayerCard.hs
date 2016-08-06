@@ -1,13 +1,19 @@
+{-# LANGUAGE DeriveGeneric #-}
+
 module PlayerCard where
 
+import Data.Aeson
+import GHC.Generics
+
 import City
-import EventEffect
 
 data PlayerCard
   = PlayerCard City
-  | Event EventEffect
   | Epidemic
-  deriving (Show, Read, Eq, Ord)
+  deriving (Show, Read, Eq, Ord, Generic)
+
+instance FromJSON PlayerCard
+instance ToJSON PlayerCard
 
 isPlayerCard :: PlayerCard -> Bool
 isPlayerCard (PlayerCard _) = True

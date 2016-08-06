@@ -1,8 +1,11 @@
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Player where
 
 import           Control.Lens
+import           Data.Aeson
+import           GHC.Generics
 
 import           City
 import           PlayerCard
@@ -15,7 +18,10 @@ data Role
   | QuarantineSpecialist
   | Researcher
   | Scientist
-  deriving (Show, Read, Eq, Ord)
+  deriving (Show, Read, Eq, Ord, Generic)
+
+instance ToJSON Role
+instance FromJSON Role
 
 data Ability
   = ContingencyPlannerEvent PlayerCard
@@ -31,8 +37,11 @@ data Player
            , _role         :: Role
            , _location         :: City
            }
-    deriving (Show, Read, Eq, Ord)
+    deriving (Show, Read, Eq, Ord, Generic)
 makeLenses ''Player
+
+instance ToJSON Player
+instance FromJSON Player
 
 handLimit :: Int
 handLimit = 7

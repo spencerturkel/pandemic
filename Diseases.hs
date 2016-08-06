@@ -1,16 +1,22 @@
+{-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE RankNTypes #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Diseases where
 
 import Control.Lens
+import Data.Aeson
+import GHC.Generics
 
 data DiseaseColor
   = Black
   | Blue
   | Red
   | Yellow
-  deriving (Show, Read, Eq, Ord, Bounded, Enum)
+  deriving (Show, Read, Eq, Ord, Bounded, Enum, Generic)
+
+instance FromJSON DiseaseColor
+instance ToJSON DiseaseColor
 
 diseasesAmount :: DiseaseColor -> Int
 diseasesAmount = const 24
@@ -21,8 +27,11 @@ data Diseases
              , _redCubes :: Int
              , _yellowCubes :: Int
              }
-  deriving (Show, Read, Eq)
+  deriving (Show, Read, Eq, Generic)
 makeLenses ''Diseases
+
+instance FromJSON Diseases
+instance ToJSON Diseases
 
 diseasesOfColor :: DiseaseColor -> Lens' Diseases Int
 diseasesOfColor Black = blackCubes

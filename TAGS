@@ -1,60 +1,60 @@
 
-./City.hs,1518
-citiesConnected citiesConnected4,5
-citiesConnected citiesConnected5,6
-data CityCity8,9
-  = SanFranciscoSanFrancisco9,10
-  | ChicagoChicago10,11
-  | TorontoToronto11,12
-  | AtlantaAtlanta12,13
-  | WashingtonWashington13,14
-  | NewYorkNewYork14,15
-  | LondonLondon15,16
-  | MadridMadrid16,17
-  | ParisParis17,18
-  | EssenEssen18,19
-  | MilanMilan19,20
-  | StPetersburgStPetersburg20,21
-  | LosAngelesLosAngeles21,22
-  | MexicoCityMexicoCity22,23
-  | MiamiMiami23,24
-  | BogotaBogota24,25
-  | LimaLima25,26
-  | SantiagoSantiago26,27
-  | SaoPauloSaoPaulo27,28
-  | BuenosAiresBuenosAires28,29
-  | LagosLagos29,30
-  | KinshashaKinshasha30,31
-  | JohannesburgJohannesburg31,32
-  | KhartoumKhartoum32,33
-  | AlgiersAlgiers33,34
-  | CairoCairo34,35
-  | IstanbulIstanbul35,36
-  | BaghdadBaghdad36,37
-  | RiyadhRiyadh37,38
-  | MoscowMoscow38,39
-  | TehranTehran39,40
-  | KarachiKarachi40,41
-  | MumbaiMumbai41,42
-  | DelhiDelhi42,43
-  | KolkataKolkata43,44
-  | ChennaiChennai44,45
-  | BangkokBangkok45,46
-  | JakartaJakarta46,47
-  | HoChiMinhCityHoChiMinhCity47,48
-  | HongKongHongKong48,49
-  | ShanghaiShanghai49,50
-  | BeijingBeijing50,51
-  | SeoulSeoul51,52
-  | TokyoTokyo52,53
-  | OsakaOsaka53,54
-  | TaipeiTaipei54,55
-  | ManilaManila55,56
-  | SydneySydney56,57
-colorOfCity colorOfCity59,60
-colorOfCity colorOfCity60,61
-connectionsFromCity connectionsFromCity111,112
-connectionsFromCity connectionsFromCity112,113
+./City.hs,1524
+citiesConnected citiesConnected9,10
+citiesConnected citiesConnected10,11
+data CityCity13,14
+  = SanFranciscoSanFrancisco14,15
+  | ChicagoChicago15,16
+  | TorontoToronto16,17
+  | AtlantaAtlanta17,18
+  | WashingtonWashington18,19
+  | NewYorkNewYork19,20
+  | LondonLondon20,21
+  | MadridMadrid21,22
+  | ParisParis22,23
+  | EssenEssen23,24
+  | MilanMilan24,25
+  | StPetersburgStPetersburg25,26
+  | LosAngelesLosAngeles26,27
+  | MexicoCityMexicoCity27,28
+  | MiamiMiami28,29
+  | BogotaBogota29,30
+  | LimaLima30,31
+  | SantiagoSantiago31,32
+  | SaoPauloSaoPaulo32,33
+  | BuenosAiresBuenosAires33,34
+  | LagosLagos34,35
+  | KinshashaKinshasha35,36
+  | JohannesburgJohannesburg36,37
+  | KhartoumKhartoum37,38
+  | AlgiersAlgiers38,39
+  | CairoCairo39,40
+  | IstanbulIstanbul40,41
+  | BaghdadBaghdad41,42
+  | RiyadhRiyadh42,43
+  | MoscowMoscow43,44
+  | TehranTehran44,45
+  | KarachiKarachi45,46
+  | MumbaiMumbai46,47
+  | DelhiDelhi47,48
+  | KolkataKolkata48,49
+  | ChennaiChennai49,50
+  | BangkokBangkok50,51
+  | JakartaJakarta51,52
+  | HoChiMinhCityHoChiMinhCity52,53
+  | HongKongHongKong53,54
+  | ShanghaiShanghai54,55
+  | BeijingBeijing55,56
+  | SeoulSeoul56,57
+  | TokyoTokyo57,58
+  | OsakaOsaka58,59
+  | TaipeiTaipei59,60
+  | ManilaManila60,61
+  | SydneySydney61,62
+colorOfCity colorOfCity67,68
+colorOfCity colorOfCity68,69
+connectionsFromCity connectionsFromCity119,120
+connectionsFromCity connectionsFromCity120,121
 
 ./RandomIO.hs,167
 newtype RandomIO RandomIO16,17
@@ -75,29 +75,29 @@ run run37,38
 runActions runActions61,62
 runActions runActions62,63
 
-./Player.hs,960
-data RoleRole9,10
-  = ContingencyPlanner ContingencyPlanner10,11
-  | DispatcherDispatcher11,12
-  | MedicMedic12,13
-  | OperationsExpertOperationsExpert13,14
-  | QuarantineSpecialistQuarantineSpecialist14,15
-  | ResearcherResearcher15,16
-  | ScientistScientist16,17
-data AbilityAbility19,20
-  = ContingencyPlannerEvent ContingencyPlannerEvent20,21
-  | DispatcherMoveOtherPawnToCityWithAnotherPawn DispatcherMoveOtherPawnToCityWithAnotherPawn21,22
-  | DispatcherMoveAnotherPawnAsIfOwn DispatcherMoveAnotherPawnAsIfOwn22,23
-  | OperationsExpertBuildResearchOperationsExpertBuildResearch23,24
-  | OperationsExpertMoveFromResearch OperationsExpertMoveFromResearch24,25
-data PlayerPlayer27,28
-  = Player Player28,29
-  = Player { _playerNumber _playerNumber28,29
-           , _playerHand _playerHand29,30
-           , _role _role30,31
-           , _location _location31,32
-handLimit handLimit36,37
-handLimit handLimit37,38
+./Player.hs,961
+data RoleRole12,13
+  = ContingencyPlanner ContingencyPlanner13,14
+  | DispatcherDispatcher14,15
+  | MedicMedic15,16
+  | OperationsExpertOperationsExpert16,17
+  | QuarantineSpecialistQuarantineSpecialist17,18
+  | ResearcherResearcher18,19
+  | ScientistScientist19,20
+data AbilityAbility25,26
+  = ContingencyPlannerEvent ContingencyPlannerEvent26,27
+  | DispatcherMoveOtherPawnToCityWithAnotherPawn DispatcherMoveOtherPawnToCityWithAnotherPawn27,28
+  | DispatcherMoveAnotherPawnAsIfOwn DispatcherMoveAnotherPawnAsIfOwn28,29
+  | OperationsExpertBuildResearchOperationsExpertBuildResearch29,30
+  | OperationsExpertMoveFromResearch OperationsExpertMoveFromResearch30,31
+data PlayerPlayer33,34
+  = Player Player34,35
+  = Player { _playerNumber _playerNumber34,35
+           , _playerHand _playerHand35,36
+           , _role _role36,37
+           , _location _location37,38
+handLimit handLimit45,46
+handLimit handLimit46,47
 
 ./Main.hs,52
 module Main Main0,1
@@ -146,19 +146,36 @@ module Commands Commands0,1
 data CommandF CommandF4,5
   = ActionF ActionF5,6
 
-./Cures.hs,376
-data CureStatusCureStatus9,10
-  = UncuredUncured10,11
-  | CuredCured11,12
-  | EradicatedEradicated12,13
-data CuresCures15,16
-  = Cures Cures16,17
-  = Cures { _redCure _redCure16,17
-          , _yellowCure _yellowCure17,18
-          , _blueCure _blueCure18,19
-          , _blackCure _blackCure19,20
-cureStatus cureStatus24,25
-cureStatus cureStatus25,26
+./Cures.hs,377
+data CureStatusCureStatus12,13
+  = UncuredUncured13,14
+  | CuredCured14,15
+  | EradicatedEradicated15,16
+data CuresCures21,22
+  = Cures Cures22,23
+  = Cures { _redCure _redCure22,23
+          , _yellowCure _yellowCure23,24
+          , _blueCure _blueCure24,25
+          , _blackCure _blackCure25,26
+cureStatus cureStatus33,34
+cureStatus cureStatus34,35
+
+./flycheck_Test.hs,439
+module Test Test0,1
+(.:).:14,15
+(f(15,16
+globalsConfigIO globalsConfigIO18,19
+globalsConfigIO globalsConfigIO19,20
+globalsIO globalsIO23,24
+globalsIO globalsIO24,25
+testConfig testConfig26,27
+testConfig testConfig27,28
+testGlobals testGlobals29,30
+testGlobals testGlobals30,31
+getRandomTest getRandomTest32,33
+getRandomTest getRandomTest33,34
+runRandomTest runRandomTest35,36
+runRandomTest runRandomTest36,37
 
 ./InfectionRate.hs,457
 data InfectionRateCounterInfectionRateCounter7,8
@@ -176,39 +193,52 @@ data InfectionRateInfectionRate19,20
 getRate getRate27,28
 getRate getRate28,29
 
-./Globals.hs,1224
---import --import11,12
-data GlobalsGlobals30,31
-  = Globals Globals31,32
-  = Globals { _spaces _spaces31,32
-            , _players _players32,33
-            , _infectionRateCounter _infectionRateCounter33,34
-            , _outbreakCounter _outbreakCounter34,35
-            , _cures _cures35,36
-            , _diseaseSupply _diseaseSupply36,37
-            , _researchStationSupply _researchStationSupply37,38
-            , _infectionDeck _infectionDeck38,39
-            , _infectionDiscard _infectionDiscard39,40
-            , _playerDeck _playerDeck40,41
-            , _playerDiscard _playerDiscard41,42
-            , _generator _generator42,43
-            , _eventEffects _eventEffects43,44
-spaceAtCity spaceAtCity48,49
-spaceAtCity spaceAtCity49,50
-primInfect primInfect66,67
-primInfect primInfect69,70
-infect infect84,85
-infect infect87,88
-doInfectionStep doInfectionStep89,90
-doInfectionStep doInfectionStep90,91
-doNextInfection doNextInfection94,95
-doNextInfection doNextInfection95,96
-shuffleDeck shuffleDeck102,103
-shuffleDeck shuffleDeck103,104
-drawFrom drawFrom109,110
-drawFrom drawFrom112,113
-doOutbreak doOutbreak118,119
-doOutbreak doOutbreak120,121
+./GlobalsView.hs,593
+data GlobalsViewGlobalsView23,24
+  = GlobalsView GlobalsView24,25
+  = GlobalsView { _spaces _spaces24,25
+            , _players _players25,26
+            , _infectionRateCounter _infectionRateCounter26,27
+            , _outbreakCounter _outbreakCounter27,28
+            , _cures _cures28,29
+            , _diseaseSupply _diseaseSupply29,30
+            , _researchStationSupply _researchStationSupply30,31
+            , _infectionDiscard _infectionDiscard31,32
+            , _playerDiscard _playerDiscard32,33
+viewGlobals viewGlobals38,39
+viewGlobals viewGlobals39,40
+
+./Globals.hs,1147
+data GlobalsGlobals27,28
+  = Globals Globals28,29
+  = Globals { _spaces _spaces28,29
+            , _players _players29,30
+            , _infectionRateCounter _infectionRateCounter30,31
+            , _outbreakCounter _outbreakCounter31,32
+            , _cures _cures32,33
+            , _diseaseSupply _diseaseSupply33,34
+            , _researchStationSupply _researchStationSupply34,35
+            , _infectionDeck _infectionDeck35,36
+            , _infectionDiscard _infectionDiscard36,37
+            , _playerDeck _playerDeck37,38
+            , _playerDiscard _playerDiscard38,39
+            , _generator _generator39,40
+spaceAtCity spaceAtCity44,45
+spaceAtCity spaceAtCity45,46
+primInfect primInfect62,63
+primInfect primInfect65,66
+infect infect80,81
+infect infect83,84
+doInfectionStep doInfectionStep85,86
+doInfectionStep doInfectionStep86,87
+doNextInfection doNextInfection90,91
+doNextInfection doNextInfection91,92
+shuffleDeck shuffleDeck98,99
+shuffleDeck shuffleDeck99,100
+drawFrom drawFrom105,106
+drawFrom drawFrom108,109
+doOutbreak doOutbreak114,115
+doOutbreak doOutbreak116,117
 
 ./DrawStage.hs,308
 module DrawStage DrawStage4,5
@@ -223,20 +253,20 @@ epidemicInfect epidemicInfect60,61
 
 ./Test.hs,439
 module Test Test0,1
-(.:).:13,14
-(f(14,15
-globalsConfigIO globalsConfigIO17,18
+(.:).:14,15
+(f(15,16
 globalsConfigIO globalsConfigIO18,19
-globalsIO globalsIO22,23
+globalsConfigIO globalsConfigIO19,20
 globalsIO globalsIO23,24
-testConfig testConfig25,26
+globalsIO globalsIO24,25
 testConfig testConfig26,27
-testGlobals testGlobals28,29
+testConfig testConfig27,28
 testGlobals testGlobals29,30
-getRandomTest getRandomTest31,32
+testGlobals testGlobals30,31
 getRandomTest getRandomTest32,33
-runRandomTest runRandomTest34,35
+getRandomTest getRandomTest33,34
 runRandomTest runRandomTest35,36
+runRandomTest runRandomTest36,37
 
 ./Pairing.hs,212
 class (Functor f, Functor g) => Pairing Pairing14,15
@@ -246,28 +276,28 @@ instance instance17,18
 pairEffect pairEffect42,43
 pairEffect pairEffect44,45
 
-./Diseases.hs,720
-data DiseaseColorDiseaseColor7,8
-  = BlackBlack8,9
-  | BlueBlue9,10
-  | RedRed10,11
-  | YellowYellow11,12
-diseasesAmount diseasesAmount14,15
-diseasesAmount diseasesAmount15,16
-data DiseasesDiseases17,18
-  = Diseases Diseases18,19
-  = Diseases { _blackCubes _blackCubes18,19
-             , _blueCubes _blueCubes19,20
-             , _redCubes _redCubes20,21
-             , _yellowCubes _yellowCubes21,22
-diseasesOfColor diseasesOfColor26,27
-diseasesOfColor diseasesOfColor27,28
-addDisease addDisease32,33
-addDisease addDisease33,34
-removeDisease removeDisease38,39
-removeDisease removeDisease39,40
-availableDiseases availableDiseases44,45
-availableDiseases availableDiseases45,46
+./Diseases.hs,725
+data DiseaseColorDiseaseColor10,11
+  = BlackBlack11,12
+  | BlueBlue12,13
+  | RedRed13,14
+  | YellowYellow14,15
+diseasesAmount diseasesAmount20,21
+diseasesAmount diseasesAmount21,22
+data DiseasesDiseases23,24
+  = Diseases Diseases24,25
+  = Diseases { _blackCubes _blackCubes24,25
+             , _blueCubes _blueCubes25,26
+             , _redCubes _redCubes26,27
+             , _yellowCubes _yellowCubes27,28
+diseasesOfColor diseasesOfColor35,36
+diseasesOfColor diseasesOfColor36,37
+addDisease addDisease41,42
+addDisease addDisease42,43
+removeDisease removeDisease47,48
+removeDisease removeDisease48,49
+availableDiseases availableDiseases53,54
+availableDiseases availableDiseases54,55
 
 ./Interpreter.hs,352
 class Monad m => Interpreter Interpreter15,16
@@ -281,13 +311,12 @@ runNotifications runNotifications22,23
 runNotifications runNotifications23,24
 instance instance28,29
 
-./PlayerCard.hs,175
-data PlayerCardPlayerCard5,6
-  = PlayerCard PlayerCard6,7
-  | Event Event7,8
-  | EpidemicEpidemic8,9
-isPlayerCard isPlayerCard11,12
-isPlayerCard isPlayerCard12,13
+./PlayerCard.hs,159
+data PlayerCardPlayerCard9,10
+  = PlayerCard PlayerCard10,11
+  | EpidemicEpidemic11,12
+isPlayerCard isPlayerCard17,18
+isPlayerCard isPlayerCard18,19
 
 ./GlobalsConfig.hs,654
 data EpidemicNumberEpidemicNumber21,22
@@ -303,10 +332,10 @@ data GlobalsConfigGlobalsConfig35,36
                   , _numEpidemics _numEpidemics38,39
 makeGlobals makeGlobals43,44
 makeGlobals makeGlobals44,45
+doInitialInfections doInitialInfections75,76
 doInitialInfections doInitialInfections76,77
-doInitialInfections doInitialInfections77,78
+insertEpidemics insertEpidemics92,93
 insertEpidemics insertEpidemics93,94
-insertEpidemics insertEpidemics94,95
 
 ./RunAction.hs,82
 module RunAction RunAction0,1
@@ -316,12 +345,12 @@ runAction runAction7,8
 ./Setup.hs,15
 main main1,2
 
-./Space.hs,174
-data SpaceSpace9,10
-  = Space Space10,11
-  = Space { _city _city10,11
-          , _hasResearchStation _hasResearchStation11,12
-          , _diseases _diseases12,13
+./Space.hs,175
+data SpaceSpace12,13
+  = Space Space13,14
+  = Space { _city _city13,14
+          , _hasResearchStation _hasResearchStation14,15
+          , _diseases _diseases15,16
 
 ./OutbreakCounter.hs,362
 data OutbreakCounterOutbreakCounter7,8
@@ -383,18 +412,18 @@ coRoleAbility coRoleAbility211,212
 coRoleAbility coRoleAbility212,213
 
 ./Deck.hs,464
-data DeckExceptionDeckException13,14
-  = DrawFromEmptyDeckDrawFromEmptyDeck14,15
-newtype Deck Deck17,18
-  = Deck Deck18,19
-  = Deck { _getDeck _getDeck18,19
-addToDeck addToDeck23,24
-addToDeck addToDeck24,25
-drawFromDeck drawFromDeck26,27
-drawFromDeck drawFromDeck27,28
-stackSmallToBig stackSmallToBig35,36
-stackSmallToBigstackSmallToBig36,37
-splitInto splitInto42,43
-splitInto splitInto43,44
-shuffle shuffle55,56
-shuffle shuffle56,57
+data DeckExceptionDeckException16,17
+  = DrawFromEmptyDeckDrawFromEmptyDeck17,18
+newtype Deck Deck23,24
+  = Deck Deck24,25
+  = Deck { _getDeck _getDeck24,25
+addToDeck addToDeck32,33
+addToDeck addToDeck33,34
+drawFromDeck drawFromDeck35,36
+drawFromDeck drawFromDeck36,37
+stackSmallToBig stackSmallToBig44,45
+stackSmallToBigstackSmallToBig45,46
+splitInto splitInto51,52
+splitInto splitInto52,53
+shuffle shuffle64,65
+shuffle shuffle65,66

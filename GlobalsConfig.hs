@@ -59,7 +59,6 @@ makeGlobals = do
                       , _playerDeck = Deck $ map PlayerCard [minBound..maxBound]
                       , _playerDiscard = Deck []
                       , _generator = gen
-                      , _eventEffects = []
                       }
   return $ initial &~ do
     modify $ shuffleDeck infectionDeck
@@ -81,14 +80,14 @@ doInitialInfections = runReaderT go 3
     go = do
       n <- ask
       unless (n < 1) $ do
-        Right city <- runExceptT (drawFrom infectionDeck)
+        Right thisCity <- runExceptT (drawFrom infectionDeck)
         replicateM_ n
           . fmap (either undefined id)
           . runExceptT
           . fmap fst
           . runWriterT
-          . infect city
-          $ colorOfCity city
+          . infect thisCity
+          $ colorOfCity thisCity
         local (\x -> x - 1) go
 
 insertEpidemics :: (MonadReader EpidemicNumber m, MonadState Globals m) => m ()
