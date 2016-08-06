@@ -20,6 +20,7 @@ executable pandemic
   other-modules:       Test
                      , GameLoop
                      , RandomIO
+                     , Server
   other-extensions:    FlexibleContexts
                      , TemplateHaskell
                      , ImpredicativeTypes
@@ -36,5 +37,7 @@ executable pandemic
                      , free >=4.12 && <4.13
                      , lens
                      , aeson
-  -- hs-source-dirs:      
+                     , servant
+                     , servant-server
+                     , warp
   default-language:    Haskell2010

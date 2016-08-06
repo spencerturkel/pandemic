@@ -160,23 +160,6 @@ data CuresCures21,22
 cureStatus cureStatus33,34
 cureStatus cureStatus34,35
 
-./flycheck_Test.hs,439
-module Test Test0,1
-(.:).:14,15
-(f(15,16
-globalsConfigIO globalsConfigIO18,19
-globalsConfigIO globalsConfigIO19,20
-globalsIO globalsIO23,24
-globalsIO globalsIO24,25
-testConfig testConfig26,27
-testConfig testConfig27,28
-testGlobals testGlobals29,30
-testGlobals testGlobals30,31
-getRandomTest getRandomTest32,33
-getRandomTest getRandomTest33,34
-runRandomTest runRandomTest35,36
-runRandomTest runRandomTest36,37
-
 ./InfectionRate.hs,457
 data InfectionRateCounterInfectionRateCounter7,8
   = RateTwoOneRateTwoOne8,9
@@ -427,3 +410,13 @@ splitInto splitInto51,52
 splitInto splitInto52,53
 shuffle shuffle64,65
 shuffle shuffle65,66
+
+./Server.hs,198
+module Server Server3,4
+type PandemicAPIPandemicAPI12,13
+pandemic pandemic15,16
+pandemicpandemic16,17
+test test19,20
+test test20,21
+runServer runServer22,23
+runServer runServer23,24

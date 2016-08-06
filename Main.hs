@@ -1,6 +1,6 @@
 module Main where
 
-import Test
+import Server
 
 main :: IO ()
-main = runRandomTest
+main = runServer pandemic
