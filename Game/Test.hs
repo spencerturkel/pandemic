@@ -5,7 +5,6 @@ import Exception
 import GameLoop
 import Globals
 import GlobalsConfig
-import GlobalsView
 import Player
 import RandomIO
 import Target
