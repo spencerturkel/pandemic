@@ -1,4 +1,13 @@
 
+./src/GetAPI.hs,188
+type GetAPI GetAPI12,13
+getAPI getAPI16,17
+getAPI getAPI17,18
+showGlobals showGlobals21,22
+showGlobals showGlobals22,23
+showSupply showSupply24,25
+showSupply showSupply25,26
+
 ./src/Main.hs,52
 module Main Main0,1
 main main5,6
@@ -19,17 +28,20 @@ data GlobalsViewGlobalsView23,24
 viewGlobals viewGlobals38,39
 viewGlobals viewGlobals39,40
 
-./src/Server.hs,246
+./src/PostAPI.hs,188
+type PostAPI PostAPI13,14
+postAPI postAPI16,17
+postAPI postAPI17,18
+setResearchStationSupply setResearchStationSupply20,21
+setResearchStationSupply setResearchStationSupply21,22
+
+./src/Server.hs,166
 module Server Server3,4
-type PandemicAPI PandemicAPI16,17
-pandemic pandemic20,21
-pandemic pandemic21,22
-test test25,26
-test test26,27
-testMod testMod28,29
-testMod testMod29,30
-runServer runServer34,35
-runServer runServer35,36
+type PandemicAPI PandemicAPI18,19
+pandemic pandemic22,23
+pandemic pandemic23,24
+runServer runServer27,28
+runServer runServer28,29
 
 ./Setup.hs,15
 main main1,2

@@ -10,27 +10,20 @@ import Control.Monad.Except
 import Network.Wai.Handler.Warp (run, Port)
 import Servant
 
+import GetAPI
 import Globals
 import GlobalsConfig
 import GlobalsView (GlobalsView, viewGlobals)
+import PostAPI
 
 type PandemicAPI =
-  "test" :> Get '[JSON] GlobalsView :<|>
-  "testMod" :> Capture "inc" Int :> Post '[JSON] Bool
+  GetAPI :<|>
+  PostAPI
 
 pandemic :: TVar Globals -> Server PandemicAPI
 pandemic g =
-    test g :<|>
-      testMod g
-
-test :: TVar Globals -> Handler GlobalsView
-test = liftIO . fmap viewGlobals . readTVarIO
-
-testMod :: TVar Globals -> Int -> Handler Bool
-testMod g n =
-    liftIO . atomically $
-      True <$ modifyTVar g (researchStationSupply .~ n) <|>
-      return False
+    getAPI g :<|>
+    postAPI g
 
 runServer :: Port -> GlobalsConfig -> IO ()
 runServer port conf =
