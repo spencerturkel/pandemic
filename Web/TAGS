@@ -1,0 +1,33 @@
+
+./src/Main.hs,52
+module Main Main0,1
+main main4,5
+main main5,6
+
+./src/GlobalsView.hs,625
+data GlobalsViewGlobalsView23,24
+  = GlobalsView GlobalsView24,25
+  = GlobalsView { _spaces _spaces24,25
+                , _players _players25,26
+                , _infectionRateCounter _infectionRateCounter26,27
+                , _outbreakCounter _outbreakCounter27,28
+                , _cures _cures28,29
+                , _diseaseSupply _diseaseSupply29,30
+                , _researchStationSupply _researchStationSupply30,31
+                , _infectionDiscard _infectionDiscard31,32
+                , _playerDiscard _playerDiscard32,33
+viewGlobals viewGlobals37,38
+viewGlobals viewGlobals38,39
+
+./src/Server.hs,198
+module Server Server6,7
+type PandemicAPIPandemicAPI19,20
+pandemic pandemic22,23
+pandemicpandemic23,24
+test test26,27
+test test27,28
+runServer runServer29,30
+runServer runServer30,31
+
+./Setup.hs,15
+main main1,2
