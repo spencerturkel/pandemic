@@ -3,22 +3,37 @@
 
 module Server where
 
+import Control.Applicative
+import Control.Concurrent.STM
+import Control.Lens
 import Control.Monad.Except
-import Network.Wai.Handler.Warp (run)
+import Network.Wai.Handler.Warp (run, Port)
 import Servant
 
-import GlobalsView
-import Test
+import Globals
+import GlobalsConfig
+import GlobalsView (GlobalsView, viewGlobals)
 
-type PandemicAPI
-  = "test" :> Get '[JSON] GlobalsView
+type PandemicAPI =
+  "test" :> Get '[JSON] GlobalsView :<|>
+  "testMod" :> Capture "inc" Int :> Post '[JSON] Bool
 
-pandemic :: Server PandemicAPI
-pandemic
-  = test
+pandemic :: TVar Globals -> Server PandemicAPI
+pandemic g =
+    test g :<|>
+      testMod g
 
-test :: Handler GlobalsView
-test = liftIO $ viewGlobals <$> testGlobals
+test :: TVar Globals -> Handler GlobalsView
+test = liftIO . fmap viewGlobals . readTVarIO
 
-runServer :: Server PandemicAPI -> IO ()
-runServer = run 8080 . serve (Proxy :: Proxy PandemicAPI)
+testMod :: TVar Globals -> Int -> Handler Bool
+testMod g n =
+    liftIO . atomically $
+      True <$ modifyTVar g (researchStationSupply .~ n) <|>
+      return False
+
+runServer :: Port -> GlobalsConfig -> IO ()
+runServer port conf =
+  do
+    g <- newTVarIO $ makeGlobals conf
+    run port . serve (Proxy :: Proxy PandemicAPI) $ pandemic g
