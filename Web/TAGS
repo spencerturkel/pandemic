@@ -29,11 +29,11 @@ viewGlobals viewGlobals38,39
 viewGlobals viewGlobals39,40
 
 ./src/PostAPI.hs,188
-type PostAPI PostAPI13,14
-postAPI postAPI16,17
+type PostAPI PostAPI14,15
 postAPI postAPI17,18
-setResearchStationSupply setResearchStationSupply20,21
+postAPI postAPI18,19
 setResearchStationSupply setResearchStationSupply21,22
+setResearchStationSupply setResearchStationSupply22,23
 
 ./src/Server.hs,166
 module Server Server3,4
