@@ -16,6 +16,8 @@ executable Web
                      , TypeOperators
   other-modules:       GlobalsView
                      , Server
+                     , GetAPI
+                     , PostAPI
   build-depends:       aeson >=0.11 && <0.12
                      , base >=4.8 && <4.9
                      , Game
