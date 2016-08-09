@@ -28,6 +28,9 @@ data Cures
   deriving (Show, Read, Generic)
 makeLenses ''Cures
 
+allCured :: Cures -> Bool
+allCured (Cures red yellow blue black) = not $ any (== Uncured) [red, yellow, blue, black]
+
 instance ToJSON Cures
 instance FromJSON Cures
 
